@@ -1,0 +1,4 @@
+﻿  imgui_tables.cpp
+d3dcompiler.lib(D3DCOMPILER_47.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in d3d12.lib(d3d12.dll); second definition ignored
+dxgi.lib(dxgi.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in d3d12.lib(d3d12.dll); second definition ignored
+  ImGui.vcxproj -> X:\Coding\Projects\Tools\CreativeChaos_ImGui\CreativeChaos\lib\x64\Debug\ImGui.lib
