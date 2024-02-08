@@ -108,7 +108,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)ImGui\src;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -128,7 +128,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)ImGui\src;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -147,18 +147,26 @@
     <ClCompile Include="src\managers\inputmanager.cpp" />
     <ClCompile Include="src\managers\statemanager.cpp" />
     <ClCompile Include="src\managers\taskmanager.cpp" />
+    <ClCompile Include="src\model\task.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\time\time.cpp" />
+    <ClCompile Include="src\time\time2.cpp" />
     <ClCompile Include="src\windows\window_debug.cpp" />
+    <ClCompile Include="src\windows\window_log.cpp" />
     <ClCompile Include="src\windows\window_properties.cpp" />
     <ClCompile Include="src\windows\window_tasks.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\application.h" />
     <ClInclude Include="src\core\manager.h" />
+    <ClInclude Include="src\core\staticconfig.h" />
+    <ClInclude Include="src\core\app.h" />
     <ClInclude Include="src\core\window.h" />
+    <ClInclude Include="src\external\nlohmann_json.hpp" />
+    <ClInclude Include="src\external\nlohmann_json_fwd.hpp" />
     <ClInclude Include="src\managers\debugmanager.h" />
     <ClInclude Include="src\managers\inputmanager.h" />
     <ClInclude Include="src\managers\inputscommon.h" />
@@ -167,14 +175,22 @@
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\model\task.h" />
     <ClInclude Include="src\time\time.h" />
+    <ClInclude Include="src\time\time2.h" />
     <ClInclude Include="src\util\asserts.h" />
     <ClInclude Include="src\util\imguihelpers.h" />
+    <ClInclude Include="src\util\json.h" />
+    <ClInclude Include="src\util\jsonfwd.h" />
+    <ClInclude Include="src\util\performance.h" />
     <ClInclude Include="src\util\proxy.h" />
     <ClInclude Include="src\util\tostring.h" />
     <ClInclude Include="src\util\util.h" />
     <ClInclude Include="src\windows\window_debug.h" />
+    <ClInclude Include="src\windows\window_log.h" />
     <ClInclude Include="src\windows\window_properties.h" />
     <ClInclude Include="src\windows\window_tasks.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="src\natvis.natvis" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

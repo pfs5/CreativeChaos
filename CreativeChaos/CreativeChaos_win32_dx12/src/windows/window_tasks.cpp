@@ -9,11 +9,6 @@
 #include "managers/inputmanager.h"
 #include "managers/statemanager.h"
 
-void Window_Tasks::NewTaskModal()
-{
-	//ImGui::OpenPopup("New Task###Modal");
-}
-
 void Window_Tasks::OnDraw()
 {
 	// todo - shortcuts bar
@@ -24,39 +19,10 @@ void Window_Tasks::OnDraw()
 		ImGui::TreePop();
 	}
 
-	// todo - testing one possible view
-
 	InitTasks();
 	ProcessInputs();
 	DrawTasks();
 	DrawNewTaskModal();
-
-	//// New task modal
-	//ImVec2 center = ImGui::GetMainViewport()->GetCenter();
-	//ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-	//ImGui::SetNextWindowSize(ImVec2{ 500.f, 200.f });
-
-	//if (ImGui::BeginPopupModal("New Task###Modal", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
-	//{
-	//	ImGui::Text("ENTER - Accept | ESC - Cancel");
-
-	//	char buffer[256] = "";
-	//	ImGui::SetNextItemWidth(400.f);
-	//	ImGui::InputText("###NewTaskInputText", buffer, 256);
-	//	ImGui::SetKeyboardFocusHere(-1);
-
-	//	if (ImGui::IsKeyPressed(ImGuiKey_Enter))
-	//	{
-	//		TaskManagerProxy::Get().CreateNewTask(buffer, ETaskCategory::Main);
-	//		ImGui::CloseCurrentPopup();
-	//	}
-	//	if (ImGui::IsKeyPressed(ImGuiKey_Escape))
-	//	{
-	//		ImGui::CloseCurrentPopup();
-	//	}
-
-	//	ImGui::EndPopup();
-	//}
 }
 
 void Window_Tasks::InitTasks()
@@ -112,7 +78,7 @@ void Window_Tasks::ProcessInputs()
 		{
 			StateManagerProxy::Get().SetMode(EApplicationMode::EditTask);
 
-			const char* taskName = currentSelectedTask.GetTask().GetName();
+			const char* taskName = currentSelectedTask.GetTask().Name.c_str();
 			std::strcpy(_inputBuffer, taskName);
 		}
 	}
@@ -121,7 +87,15 @@ void Window_Tasks::ProcessInputs()
 		const TaskManager::TaskPtr currentSelectedTask = StateManagerProxy::Get().GetCurrentSelectedTask();
 		if (currentSelectedTask.IsValid())
 		{
-			currentSelectedTask.GetTask().SetActive(!currentSelectedTask.GetTask().IsActive());
+			const bool isTaskActive = currentSelectedTask.GetTask().Active;
+			if (isTaskActive)
+			{
+				TaskManagerProxy::Get().StopTask(currentSelectedTask);
+			}
+			else
+			{
+				TaskManagerProxy::Get().StartTask(currentSelectedTask);
+			}
 		}
 	}
 	else if (inputManager.IsInputPressed(EInputAction::NewTask))
@@ -133,7 +107,7 @@ void Window_Tasks::ProcessInputs()
 		const TaskManager::TaskPtr currentSelectedTask = StateManagerProxy::Get().GetCurrentSelectedTask();
 		if (currentSelectedTask.IsValid())
 		{
-			currentSelectedTask.GetTask().SetCategory(ETaskCategory::Trash);
+			currentSelectedTask.GetTask().Category = ETaskCategory::Trash;
 		}
 	}
 	else if (inputManager.IsInputPressed(EInputAction::ChangeTaskCategory))
@@ -143,17 +117,17 @@ void Window_Tasks::ProcessInputs()
 		{
 			// Shift category
 			Task& task = currentSelectedTask.GetTask();
-			if (task.GetCategory() == ETaskCategory::Trash)
+			if (task.Category == ETaskCategory::Trash)
 			{
-				task.SetCategory(ETaskCategory::Backlog);
+				task.Category = ETaskCategory::Backlog;
 			}
-			else if (task.GetCategory() == ETaskCategory::Backlog)
+			else if (task.Category == ETaskCategory::Backlog)
 			{
-				task.SetCategory(ETaskCategory::Main);
+				task.Category = ETaskCategory::Main;
 			}
-			else if (task.GetCategory() == ETaskCategory::Main)
+			else if (task.Category == ETaskCategory::Main)
 			{
-				task.SetCategory(ETaskCategory::Backlog);
+				task.Category = ETaskCategory::Backlog;
 			}
 		}
 	}
@@ -162,7 +136,7 @@ void Window_Tasks::ProcessInputs()
 		const TaskManager::TaskPtr currentSelectedTask = StateManagerProxy::Get().GetCurrentSelectedTask();
 		if (currentSelectedTask.IsValid())
 		{
-			TaskManagerProxy::Get().GetTask(currentSelectedTask).SetName(_inputBuffer);
+			TaskManagerProxy::Get().GetTask(currentSelectedTask).Name = _inputBuffer;
 			StateManagerProxy::Get().SetMode(EApplicationMode::Browse);
 		}
 	}
@@ -203,7 +177,7 @@ void Window_Tasks::DrawTasks()
 				ImGui::TableNextRow();
 
 				// Col0 - Task status
-				if (task.IsActive())
+				if (task.Active)
 				{
 					DrawActiveButton();
 				}
@@ -227,12 +201,12 @@ void Window_Tasks::DrawTasks()
 					else
 					{
 						ImGui::TableSetBgColor(ImGuiTableBgTarget_RowBg1, ImGui::GetColorU32(ImVec4{ 0.8f, 0.3f, 0.f, 1.f }));
-						ImGui::TextColored(ImVec4{ 1.f, 1.f, 1.f, 1.f }, "[%04d] %s", task.GetID(), task.GetName());
+						ImGui::TextColored(ImVec4{ 1.f, 1.f, 1.f, 1.f }, "[%04d] %s", task.ID, task.Name.c_str());
 					}
 				}
 				else
 				{
-					ImGui::Text("[%04d] %s", task.GetID(), task.GetName());
+					ImGui::Text("[%04d] %s", task.ID, task.Name.c_str());
 				}
 
 				++taskIdx;

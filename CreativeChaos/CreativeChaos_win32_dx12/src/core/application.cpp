@@ -2,6 +2,7 @@
 #include "core/application.h"
 
 #include "imgui.h"
+#include "time/time.h"
 
 void Application::Init()
 {
@@ -23,6 +24,11 @@ void Application::Init()
 	RegisterWindow(_windowTasks);
 	RegisterWindow(_windowProperties);
 	RegisterWindow(_windowDebug);
+	RegisterWindow(_windowLog);
+
+	_taskManager.Initialize();
+
+	DebugManagerProxy::Get().PushLog("App initialized.");
 }
 
 void Application::Shutdown()

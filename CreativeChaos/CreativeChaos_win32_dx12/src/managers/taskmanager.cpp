@@ -1,6 +1,11 @@
 #include "pch.h"
 #include "managers/taskmanager.h"
 
+#include "util/json.h"
+#include "core/staticconfig.h"
+#include "util/performance.h"
+#include "debugmanager.h"
+
 Task& TaskManager::TaskPtr::GetTask() const
 {
 	return TaskManagerProxy::Get().GetTask(Index);
@@ -33,27 +38,16 @@ TaskManager::TaskManager::TaskPtr& TaskManager::TaskPtr::operator--()
 
 const TaskManager::TaskPtr TaskManager::TaskPtr::Invalid;
 
-TaskManager::TaskManager()
+void TaskManager::Initialize()
 {
-	// Init dummy tasks
-	_tasks.emplace_back("Implement list of tasks in model.", ETaskCategory::Main, (uint32_t)_tasks.size());
-	_tasks.emplace_back("Implement basic view with <main> tasks and <backlog> tasks.", ETaskCategory::Main, (uint32_t)_tasks.size());
-	_tasks.emplace_back("Implement ability to switch views. The first view is per task type. The other view uses filters (show active?)", ETaskCategory::Main, (uint32_t)_tasks.size());
-	_tasks.emplace_back("Implement ability to iterate trough tasks via arrow keys.", ETaskCategory::Main, (uint32_t)_tasks.size());
-	_tasks.emplace_back("Pressing <rename> shortcut ALT+F2 opens a rename edit box to rename the selected task.", ETaskCategory::Main, (uint32_t)_tasks.size());
-	_tasks.emplace_back("Pressing ENTER opens the task in the properties window.", ETaskCategory::Main, (uint32_t)_tasks.size());
-	_tasks.emplace_back("The properties window will display additional info about the task.", ETaskCategory::Main, (uint32_t)_tasks.size());
-
-	_tasks.emplace_back("Implement main menu bar.", ETaskCategory::Backlog, (uint32_t)_tasks.size());
-	_tasks.emplace_back("Implement ability to add a new task. Automatically add to main.", ETaskCategory::Backlog, (uint32_t)_tasks.size());
-	_tasks.emplace_back("Shortcut to move current task to backlog/main.", ETaskCategory::Backlog, (uint32_t)_tasks.size());
-	_tasks.emplace_back("Shortcut to delete current task. Delete moves to <trash> category.", ETaskCategory::Backlog, (uint32_t)_tasks.size());
-
+	LoadTasks();
 }
 
 void TaskManager::CreateNewTask(const char* name, ETaskCategory category)
 {
 	_tasks.emplace_back(name, category, (uint32_t)_tasks.size());
+
+	MarkDirty();
 }
 
 void TaskManager::FindTasksWithCategory(std::vector<TaskPtr>& outTasks, ETaskCategory category)
@@ -61,11 +55,82 @@ void TaskManager::FindTasksWithCategory(std::vector<TaskPtr>& outTasks, ETaskCat
 	for (uint32_t i = 0; i < _tasks.size(); ++i)
 	{
 		const Task& t = _tasks[i];
-		if (t.GetCategory() == category)
+		if (t.Category == category)
 		{
 			outTasks.emplace_back(i);
 		}
 	}
+}
+
+void TaskManager::StartTask(TaskPtr ptr)
+{
+	Task& task = GetTask(ptr);
+	task.Active = true;
+	task.PushEvent(TaskEvent::EType::Start, Timestamp::Now());
+
+	MarkDirty();
+}
+
+void TaskManager::StopTask(TaskPtr ptr)
+{
+	Task& task = GetTask(ptr);
+	task.Active = false;
+	task.PushEvent(TaskEvent::EType::Stop, Timestamp::Now());
+
+	MarkDirty();
+}
+
+void TaskManager::MarkDirty()
+{
+	SaveTasks();
+}
+
+void TaskManager::SaveTasks() const
+{
+	PerformanceTimer timer;
+
+	nlohmann::json allTasks;
+	for (const Task& task : _tasks)
+	{
+		nlohmann::json taskObj = task;
+		allTasks.push_back(taskObj);
+	}
+
+	nlohmann::json baseObject;
+	baseObject["tasks"] = allTasks;
+
+	std::ofstream outFile(StaticConfig::DB_PATH_TASKS);
+	outFile << std::setw(4) << baseObject << std::endl;
+
+	const float elapsedMs = timer.GetElapsedMs();
+	DebugManagerProxy::Get().PushLog(std::format("Save successful! Elapsed {:.2f}ms", elapsedMs).c_str());
+}
+
+void TaskManager::LoadTasks()
+{
+	PerformanceTimer timer;
+
+	_tasks.clear();
+
+	std::ifstream f(StaticConfig::DB_PATH_TASKS);
+	nlohmann::json allTasks = nlohmann::json::parse(f);
+
+	for (nlohmann::json taskJson : allTasks["tasks"])
+	{
+		_tasks.emplace_back();
+		Task& t = _tasks[_tasks.size() - 1];
+		from_json(taskJson, t);
+
+		for (nlohmann::json taskEventJson : taskJson["taskEvents"])
+		{
+			t.Events.emplace_back();
+			TaskEvent& taskEvent = t.Events[t.Events.size() - 1];
+			from_json(taskEventJson, taskEvent);
+		}
+	}
+
+	const float elapsedMs = timer.GetElapsedMs();
+	DebugManagerProxy::Get().PushLog(std::format("Load successful! Elapsed {:.2f}ms", elapsedMs).c_str());
 }
 
 TaskManagerProxy::TaskManagerProxy() = default;

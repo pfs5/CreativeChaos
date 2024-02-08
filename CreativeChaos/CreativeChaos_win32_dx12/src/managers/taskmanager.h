@@ -31,7 +31,7 @@ public:
 	};
 
 public:
-	TaskManager();
+	void Initialize();
 
 	void CreateNewTask(const char* name, ETaskCategory category);
 
@@ -40,6 +40,15 @@ public:
 	Task& GetTask(TaskPtr ptr) { return _tasks[ptr.Index]; }
 	TaskPtr GetFirstTaskPtr() { return _tasks.size() > 0 ? TaskPtr{0} : TaskPtr::Invalid; }
 	uint32_t GetNumTasks() const { return (uint32_t)_tasks.size(); }
+
+	void StartTask(TaskPtr ptr);
+	void StopTask(TaskPtr ptr);
+
+	void MarkDirty();
+
+	// Database
+	void SaveTasks() const;
+	void LoadTasks();
 
 private:
 	std::vector<Task> _tasks;

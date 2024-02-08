@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+  <Type Name="Timestamp">
+    <DisplayString>
+      TotalSec={_timestamp._MyDur._MyRep / 10000000}
+      [{_timestamp._MyDur._MyRep / 10000000 / 60 / 60 % 24 + 1}:{_timestamp._MyDur._MyRep / 10000000 / 60 % 60}:{_timestamp._MyDur._MyRep / 10000000 % 60}]
+    </DisplayString>
+  </Type>
+
+  <Type Name="TimeSpan">
+    <DisplayString>
+      {_duration} | [{_duration._MyRep / 60 / 60 % 24}:{_duration._MyRep / 60 % 60}:{_duration._MyRep % 60}]
+    </DisplayString>
+  </Type>
+</AutoVisualizer>

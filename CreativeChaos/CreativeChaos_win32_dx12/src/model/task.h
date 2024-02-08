@@ -1,5 +1,8 @@
 #pragma once
 
+#include "time/time.h"
+#include "util/jsonfwd.h"
+
 enum class ETaskCategory : uint8_t
 {
 	Main,
@@ -7,31 +10,72 @@ enum class ETaskCategory : uint8_t
 	Trash
 };
 
-class Task
+struct TaskEvent
 {
-public:
-	Task(const char* name, ETaskCategory category, uint32_t id) :
-		_name{ name },
-		_category{ category },
-		_id{ id }
+	// ToString below
+	enum class EType : uint8_t
+	{
+		Start,
+		Stop
+	};
+
+	EType Type;
+	Timestamp Time;
+
+	TaskEvent() = default;
+	TaskEvent(EType type, Timestamp time) :
+		Type{ type },
+		Time{ time }
 	{
 
 	}
-	
-	uint32_t GetID() const { return _id; }
-
-	const char* GetName() const { return _name.c_str(); }
-	void SetName(const char* value) { _name = value; }
-
-	ETaskCategory GetCategory() const { return _category; }
-	void SetCategory(ETaskCategory value) { _category = value; }
-
-	bool IsActive() const { return _active; }
-	void SetActive(bool value) { _active = value; }
-
-private:
-	uint32_t _id;
-	std::string _name;
-	ETaskCategory _category;
-	bool _active = false;
 };
+
+inline const char* ToString(TaskEvent::EType taskEventType)
+{
+	switch (taskEventType)
+	{
+		case TaskEvent::EType::Start: return "Activate";
+		case TaskEvent::EType::Stop: return "Deactivate";
+	}
+
+	return "UNKNOWN";
+}
+
+struct Task
+{
+	uint32_t ID;
+	std::string Name;
+	ETaskCategory Category;
+	bool Active = false;
+	Timestamp CreatedAt;
+	TimeSpan Progress;
+	std::vector<TaskEvent> Events;	// ensure events are sorted
+
+	Task() = default;
+	Task(const char* name, ETaskCategory category, uint32_t id, Timestamp createdAt = Timestamp::Now()) :
+		Name{ name },
+		Category{ category },
+		ID{ id },
+		CreatedAt{ createdAt }
+	{
+
+	}
+
+	TimeSpan CalculateProgress() const;
+
+	template<typename... Args>
+	void PushEvent(const Args&... args)
+	{
+		Events.emplace_back(std::forward<const Args>(args)...);
+		Progress = CalculateProgress();
+	}
+
+};
+
+// Serialization
+void to_json(nlohmann::json& json, const Task& task);
+void from_json(const nlohmann::json& json, Task& task);
+
+void to_json(nlohmann::json& json, const TaskEvent& taskEvent);
+void from_json(const nlohmann::json& json, TaskEvent& taskEvent);

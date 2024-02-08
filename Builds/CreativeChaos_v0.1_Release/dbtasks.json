@@ -1,0 +1,54 @@
+{
+    "tasks": [
+        {
+            "active": false,
+            "category": 1,
+            "createdAt": 1706743939,
+            "id": 0,
+            "name": "My new task",
+            "taskEvents": [
+                {
+                    "time": 1706743953,
+                    "type": 0
+                },
+                {
+                    "time": 1706744031,
+                    "type": 1
+                }
+            ]
+        },
+        {
+            "active": false,
+            "category": 2,
+            "createdAt": 1706743945,
+            "id": 1,
+            "name": "my other task",
+            "taskEvents": [
+                {
+                    "time": 1706743947,
+                    "type": 0
+                },
+                {
+                    "time": 1706743948,
+                    "type": 1
+                },
+                {
+                    "time": 1706743951,
+                    "type": 0
+                },
+                {
+                    "time": 1706743952,
+                    "type": 1
+                },
+                {
+                    "time": 1706743952,
+                    "type": 0
+                },
+                {
+                    "time": 1706743952,
+                    "type": 1
+                }
+            ]
+        }
+    ]
+}

@@ -4,9 +4,6 @@
 
 class Window_Tasks : public Window
 {
-public:
-	void NewTaskModal();
-
 private:
 	struct TaskList
 	{

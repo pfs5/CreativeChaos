@@ -12,6 +12,10 @@
     <ClCompile Include="src\managers\inputmanager.cpp" />
     <ClCompile Include="src\managers\statemanager.cpp" />
     <ClCompile Include="src\managers\debugmanager.cpp" />
+    <ClCompile Include="src\windows\window_log.cpp" />
+    <ClCompile Include="src\model\task.cpp" />
+    <ClCompile Include="src\time\time.cpp" />
+    <ClCompile Include="src\time\time2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\application.h" />
@@ -33,5 +37,17 @@
     <ClInclude Include="src\managers\debugmanager.h" />
     <ClInclude Include="src\core\manager.h" />
     <ClInclude Include="src\time\time.h" />
+    <ClInclude Include="src\util\json.h" />
+    <ClInclude Include="src\external\nlohmann_json.hpp" />
+    <ClInclude Include="src\external\nlohmann_json_fwd.hpp" />
+    <ClInclude Include="src\windows\window_log.h" />
+    <ClInclude Include="src\core\staticconfig.h" />
+    <ClInclude Include="src\time\time2.h" />
+    <ClInclude Include="src\util\jsonfwd.h" />
+    <ClInclude Include="src\util\performance.h" />
+    <ClInclude Include="src\core\app.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="src\natvis.natvis" />
   </ItemGroup>
 </Project>
