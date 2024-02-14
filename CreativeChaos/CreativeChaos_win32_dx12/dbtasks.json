@@ -2,7 +2,7 @@
     "tasks": [
         {
             "active": false,
-            "category": 0,
+            "category": 1,
             "createdAt": 1705737600,
             "id": 0,
             "name": "asoidjs",
@@ -59,7 +59,7 @@
         },
         {
             "active": true,
-            "category": 1,
+            "category": 0,
             "createdAt": 1706742821,
             "id": 1,
             "name": "test",
@@ -80,11 +80,20 @@
         },
         {
             "active": false,
-            "category": 0,
+            "category": 2,
             "createdAt": 1706742822,
             "id": 2,
             "name": "test",
-            "taskEvents": null
+            "taskEvents": [
+                {
+                    "time": 1707431889,
+                    "type": 0
+                },
+                {
+                    "time": 1707431889,
+                    "type": 1
+                }
+            ]
         },
         {
             "active": false,
@@ -128,8 +137,8 @@
             ]
         },
         {
-            "active": false,
-            "category": 2,
+            "active": true,
+            "category": 0,
             "createdAt": 1706742824,
             "id": 4,
             "name": "test",
@@ -141,12 +150,16 @@
                 {
                     "time": 1706743174,
                     "type": 1
+                },
+                {
+                    "time": 1707432143,
+                    "type": 0
                 }
             ]
         },
         {
             "active": true,
-            "category": 0,
+            "category": 2,
             "createdAt": 1706743076,
             "id": 5,
             "name": "kaosdksa",
@@ -169,6 +182,145 @@
                     "type": 0
                 }
             ]
+        },
+        {
+            "active": false,
+            "category": 2,
+            "createdAt": 1707432144,
+            "id": 7,
+            "name": "ajsdijsa",
+            "taskEvents": null
+        },
+        {
+            "active": false,
+            "category": 0,
+            "createdAt": 1707432146,
+            "id": 8,
+            "name": "aisjdiasjdisajd",
+            "taskEvents": [
+                {
+                    "time": 1707433075,
+                    "type": 0
+                },
+                {
+                    "time": 1707433075,
+                    "type": 1
+                }
+            ]
+        },
+        {
+            "active": false,
+            "category": 1,
+            "createdAt": 1707432147,
+            "id": 9,
+            "name": "aisjdiasjdijsa",
+            "taskEvents": null
+        },
+        {
+            "active": false,
+            "category": 1,
+            "createdAt": 1707432148,
+            "id": 10,
+            "name": "iajsdijasidj",
+            "taskEvents": [
+                {
+                    "time": 1707949057,
+                    "type": 0
+                },
+                {
+                    "time": 1707949057,
+                    "type": 1
+                }
+            ]
+        },
+        {
+            "active": false,
+            "category": 1,
+            "createdAt": 1707432150,
+            "id": 11,
+            "name": "asjdiasjdiasj",
+            "taskEvents": null
+        },
+        {
+            "active": false,
+            "category": 1,
+            "createdAt": 1707432151,
+            "id": 12,
+            "name": "aisjdiasjdi",
+            "taskEvents": null
+        },
+        {
+            "active": false,
+            "category": 1,
+            "createdAt": 1707432152,
+            "id": 13,
+            "name": "aisjdiasjdisaj",
+            "taskEvents": null
+        },
+        {
+            "active": false,
+            "category": 0,
+            "createdAt": 1707432153,
+            "id": 14,
+            "name": "aijsdiajsdiasj",
+            "taskEvents": null
+        },
+        {
+            "active": false,
+            "category": 1,
+            "createdAt": 1707432154,
+            "id": 15,
+            "name": "iajsdiajsdijasidj",
+            "taskEvents": null
+        },
+        {
+            "active": false,
+            "category": 1,
+            "createdAt": 1707432156,
+            "id": 16,
+            "name": "aisjdiasjdiajsdijasdiajs",
+            "taskEvents": null
+        },
+        {
+            "active": false,
+            "category": 0,
+            "createdAt": 1707511229,
+            "id": 17,
+            "name": "asd",
+            "taskEvents": [
+                {
+                    "time": 1707949060,
+                    "type": 0
+                },
+                {
+                    "time": 1707949064,
+                    "type": 1
+                }
+            ]
+        },
+        {
+            "active": false,
+            "category": 0,
+            "createdAt": 1707921580,
+            "id": 18,
+            "name": "asjdi",
+            "taskEvents": null
+        },
+        {
+            "active": false,
+            "category": 0,
+            "createdAt": 1707949019,
+            "id": 19,
+            "name": "Moj novi task",
+            "taskEvents": null
+        },
+        {
+            "active": false,
+            "category": 0,
+            "createdAt": 1707949047,
+            "id": 20,
+            "name": "test",
+            "taskEvents": null
         }
     ]
 }

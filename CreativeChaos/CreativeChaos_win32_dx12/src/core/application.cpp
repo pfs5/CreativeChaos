@@ -6,6 +6,7 @@
 
 void Application::Init()
 {
+	LoadFonts();
 	InitTheme_2();
 	ImGui::GetIO().ConfigFlags &= ~ImGuiConfigFlags_NavEnableKeyboard;
 	ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NavNoCaptureKeyboard;
@@ -185,6 +186,9 @@ void Application::InitTheme_1()
 
 void Application::InitTheme_2()
 {
+	// CURRENT THEME
+
+	// ptodo - Find colors
 	ImGuiStyle& style = ImGui::GetStyle();
 
 	style.Colors[ImGuiCol_Text] = ImVec4(0.90f, 0.90f, 0.90f, 0.90f);
@@ -237,7 +241,7 @@ void Application::InitTheme_2()
 
 	style.WindowPadding = ImVec2(8.00f, 8.00f);
 	style.FramePadding = ImVec2(5.00f, 6.00f);
-	style.CellPadding = ImVec2(6.00f, 6.00f);
+	style.CellPadding = ImVec2(6.00f, 12.00f);
 	style.ItemSpacing = ImVec2(6.00f, 6.00f);
 	style.ItemInnerSpacing = ImVec2(6.00f, 6.00f);
 	style.TouchExtraPadding = ImVec2(0.00f, 0.00f);
@@ -257,4 +261,36 @@ void Application::InitTheme_2()
 	style.GrabRounding = 3;
 	style.LogSliderDeadzone = 4;
 	style.TabRounding = 4;
+}
+
+void Application::LoadFonts()
+{
+	// ptodo - don't hard-code this here.
+	ImGuiIO& io = ImGui::GetIO();
+
+	static const char * const ROOT = ".\\res\\fonts";
+
+	static const std::vector<std::pair<const char*, float>> FONTS = {
+		{"Roboto-Medium.ttf", 17.f},
+
+		{"Cousine-Regular.ttf", 12.f},
+		{"DroidSans.ttf", 12.f},
+		{"Karla-Regular.ttf", 12.f},
+		{"ProggyClean.ttf", 12.f},
+		{"ProggyTiny.ttf", 12.f},
+		{"Tahoma.ttf", 17.f}
+	};
+
+	ImFontConfig config;
+	config.OversampleH = 4;
+	config.OversampleV = 4;
+	//config.RasterizerDensity = 4.f;
+
+	for (const std::pair<const char* /*path*/, float /*size*/> pair : FONTS)
+	{
+		const std::string path = std::format("{}\\{}", ROOT, pair.first); 
+		io.Fonts->AddFontFromFileTTF(path.c_str(), pair.second, &config);
+	}
+
+	io.Fonts->Build();
 }

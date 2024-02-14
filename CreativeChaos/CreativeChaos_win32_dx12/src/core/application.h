@@ -36,10 +36,12 @@ private:
 	std::vector<Manager*> _managers;
 
 private:
-	void RegisterWindow(Window& w) { _windows.emplace_back(&w); }
+	void RegisterWindow(Window& w) { _windows.emplace_back(&w); w.OnRegister(); }
 	void RegisterManager(Manager& m) { _managers.emplace_back(&m); }
 
 	void InitTheme_1();
 	void InitTheme_2();
+
+	void LoadFonts();
 };
 

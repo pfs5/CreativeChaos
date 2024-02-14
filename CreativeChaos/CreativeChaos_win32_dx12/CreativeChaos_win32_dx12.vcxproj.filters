@@ -16,6 +16,10 @@
     <ClCompile Include="src\model\task.cpp" />
     <ClCompile Include="src\time\time.cpp" />
     <ClCompile Include="src\time\time2.cpp" />
+    <ClCompile Include="src\model\taskview.cpp" />
+    <ClCompile Include="src\taskviews\taskview_categories.cpp" />
+    <ClCompile Include="src\taskviews\taskview_activity.cpp" />
+    <ClCompile Include="src\util\debug.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\application.h" />
@@ -46,6 +50,10 @@
     <ClInclude Include="src\util\jsonfwd.h" />
     <ClInclude Include="src\util\performance.h" />
     <ClInclude Include="src\core\app.h" />
+    <ClInclude Include="src\model\taskview.h" />
+    <ClInclude Include="src\taskviews\taskview_categories.h" />
+    <ClInclude Include="src\taskviews\taskview_activity.h" />
+    <ClInclude Include="src\util\debug.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="src\natvis.natvis" />

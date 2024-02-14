@@ -7,7 +7,8 @@ enum class ETaskCategory : uint8_t
 {
 	Main,
 	Backlog,
-	Trash
+	Trash,
+	Count
 };
 
 struct TaskEvent

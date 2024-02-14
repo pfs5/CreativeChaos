@@ -19,3 +19,4 @@
 #include <vector>
 
 #include "util/asserts.h"
+#include "util/debug.h"

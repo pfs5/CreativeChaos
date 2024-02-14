@@ -15,6 +15,14 @@ void Window_Log::OnDraw()
 		}
 	}
 
+	if (DebugManagerProxy::Get().GetLogDirty())
+	{
+		ImGui::SetScrollHereY();
+		//ImGui::SetScrollY(ImGui::GetScrollMaxY());
+	}
+
 	ImGui::EndChild();
+
+	DebugManagerProxy::Get().ClearLogDirty();
 }
 

@@ -62,6 +62,18 @@ void TaskManager::FindTasksWithCategory(std::vector<TaskPtr>& outTasks, ETaskCat
 	}
 }
 
+void TaskManager::FindTasksWithPredicate(std::vector<TaskPtr>& outTasks, const FindTaskPredicate& predicate)
+{
+	for (uint32_t i = 0; i < _tasks.size(); ++i)
+	{
+		const Task& t = _tasks[i];
+		if (predicate(t))
+		{
+			outTasks.emplace_back(i);
+		}
+	}
+}
+
 void TaskManager::StartTask(TaskPtr ptr)
 {
 	Task& task = GetTask(ptr);
@@ -78,6 +90,19 @@ void TaskManager::StopTask(TaskPtr ptr)
 	task.PushEvent(TaskEvent::EType::Stop, Timestamp::Now());
 
 	MarkDirty();
+}
+
+void TaskManager::SetTaskCategory(TaskPtr ptr, ETaskCategory category)
+{
+	Task& task = GetTask(ptr);
+
+	const ETaskCategory oldCategory = task.Category;
+	task.Category = category;
+
+	if (oldCategory != category)
+	{
+		MarkDirty();
+	}
 }
 
 void TaskManager::MarkDirty()

@@ -148,12 +148,16 @@
     <ClCompile Include="src\managers\statemanager.cpp" />
     <ClCompile Include="src\managers\taskmanager.cpp" />
     <ClCompile Include="src\model\task.cpp" />
+    <ClCompile Include="src\model\taskview.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\taskviews\taskview_activity.cpp" />
+    <ClCompile Include="src\taskviews\taskview_categories.cpp" />
     <ClCompile Include="src\time\time.cpp" />
     <ClCompile Include="src\time\time2.cpp" />
+    <ClCompile Include="src\util\debug.cpp" />
     <ClCompile Include="src\windows\window_debug.cpp" />
     <ClCompile Include="src\windows\window_log.cpp" />
     <ClCompile Include="src\windows\window_properties.cpp" />
@@ -172,11 +176,15 @@
     <ClInclude Include="src\managers\inputscommon.h" />
     <ClInclude Include="src\managers\statemanager.h" />
     <ClInclude Include="src\managers\taskmanager.h" />
+    <ClInclude Include="src\model\taskview.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\model\task.h" />
+    <ClInclude Include="src\taskviews\taskview_activity.h" />
+    <ClInclude Include="src\taskviews\taskview_categories.h" />
     <ClInclude Include="src\time\time.h" />
     <ClInclude Include="src\time\time2.h" />
     <ClInclude Include="src\util\asserts.h" />
+    <ClInclude Include="src\util\debug.h" />
     <ClInclude Include="src\util\imguihelpers.h" />
     <ClInclude Include="src\util\json.h" />
     <ClInclude Include="src\util\jsonfwd.h" />
