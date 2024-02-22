@@ -30,10 +30,15 @@ void Application::Init()
 	_taskManager.Initialize();
 
 	DebugManagerProxy::Get().PushLog("App initialized.");
+
+	_isOpen = true;
+	ApplicationProxy::Open(*this);
 }
 
 void Application::Shutdown()
 {
+	ApplicationProxy::Close(*this);
+
 	StateManagerProxy::Close(_stateManager);
 	InputManagerProxy::Close(_inputManager);
 	TaskManagerProxy::Close(_taskManager);
@@ -97,6 +102,11 @@ void Application::Update()
 	{
 		w->Draw();
 	}
+}
+
+void Application::Exit()
+{
+	if (ApplicationProxy::IsValid()) { ApplicationProxy::Get()._isOpen = false; }
 }
 
 void Application::InitTheme_1()
@@ -255,7 +265,7 @@ void Application::InitTheme_2()
 	style.TabBorderSize = 1;
 	style.WindowRounding = 7;
 	style.ChildRounding = 4;
-	style.FrameRounding = 3;
+	//style.FrameRounding = 3;
 	style.PopupRounding = 4;
 	style.ScrollbarRounding = 9;
 	style.GrabRounding = 3;
@@ -294,3 +304,5 @@ void Application::LoadFonts()
 
 	io.Fonts->Build();
 }
+
+ApplicationProxy::ApplicationProxy() = default;

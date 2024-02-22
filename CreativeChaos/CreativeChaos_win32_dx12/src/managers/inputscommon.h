@@ -32,6 +32,8 @@ enum class EInputAction : uint8_t
 	ConfirmNewTask,
 	CancelNewTask,
 
+	ExitApp,
+
 	Count
 };
 

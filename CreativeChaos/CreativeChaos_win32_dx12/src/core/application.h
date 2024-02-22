@@ -4,6 +4,7 @@
 #include "managers/inputmanager.h"
 #include "managers/statemanager.h"
 #include "managers/taskmanager.h"
+#include "util/proxy.h"
 #include "windows/window_debug.h"
 #include "windows/window_log.h"
 #include "windows/window_properties.h"
@@ -17,10 +18,15 @@ class Application
 public:
 	void Init();
 	void Shutdown();
-
 	void Update();
 
+	bool IsOpen() const { return _isOpen; }
+
+	static void Exit();
+
 private:
+	bool _isOpen = false;
+
 	DebugManager _debugManager;
 	TaskManager _taskManager;
 	InputManager _inputManager;
@@ -45,3 +51,7 @@ private:
 	void LoadFonts();
 };
 
+struct ApplicationProxy : Proxy<Application>
+{
+	ApplicationProxy();
+};

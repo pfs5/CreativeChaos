@@ -67,4 +67,5 @@ private:
 	void OnInput_ChangeTaskCategory(const InputEvent& e);
 	void OnInput_ConfirmEditTask(const InputEvent& e);
 	void OnInput_CancelEditTask(const InputEvent& e);
+	void OnInput_ExitApp(const InputEvent& e);
 };

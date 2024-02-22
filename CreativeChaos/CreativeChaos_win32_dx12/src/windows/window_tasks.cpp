@@ -12,6 +12,7 @@
 
 #include "taskviews/taskview_categories.h"
 #include "taskviews/taskview_activity.h"
+#include "core/Application.h"
 
 Window_Tasks::Window_Tasks()
 {
@@ -47,6 +48,9 @@ void Window_Tasks::OnRegister()
 	RegisterInputCallbackTemplated<Window_Tasks>(this, EInputAction::ChangeTaskCategory, &Window_Tasks::OnInput_ChangeTaskCategory);
 	RegisterInputCallbackTemplated<Window_Tasks>(this, EInputAction::ConfirmEditTask, &Window_Tasks::OnInput_ConfirmEditTask);
 	RegisterInputCallbackTemplated<Window_Tasks>(this, EInputAction::CancelEditTask, &Window_Tasks::OnInput_CancelEditTask);
+
+	// ptodo - move this somewhere else
+	RegisterInputCallbackTemplated<Window_Tasks>(this, EInputAction::ExitApp, &Window_Tasks::OnInput_ExitApp);
 }
 
 void Window_Tasks::OnDraw()
@@ -101,13 +105,17 @@ void Window_Tasks::DrawTasks()
 			}
 
 			const std::string tableId = StringFormat("###Table%s", taskCollection.Title.c_str());
-			if (!ImGui::BeginTable(tableId.c_str(), 2, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg))
+			if (!ImGui::BeginTable(tableId.c_str(), 3, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg))
 			{
 				continue;
 			}
 
 			// Setup columns
-			ImGui::TableSetupColumn("TaskStatus", ImGuiTableColumnFlags_WidthFixed, 60.f);
+			static const float COLWIDTH_PRIORITY = 40.f;
+			static const float COLWIDTH_STATUS = 60.f;
+
+			ImGui::TableSetupColumn("TaskID", ImGuiTableColumnFlags_WidthFixed, COLWIDTH_PRIORITY);
+			ImGui::TableSetupColumn("TaskStatus", ImGuiTableColumnFlags_WidthFixed, COLWIDTH_STATUS);
 			ImGui::TableSetupColumn("TaskText", ImGuiTableColumnFlags_WidthStretch);
 
 			for (TaskManager::TaskPtr taskPtr : taskCollection.Tasks)
@@ -116,14 +124,28 @@ void Window_Tasks::DrawTasks()
 
 				ImGui::TableNextRow();
 
-				// Col0 - Task status
+				// Col0 - Prio
+				ImGui::TableSetColumnIndex(0);
+				std::string id = StringFormat("P%d", task.Priority.GetValue());
+				{
+					// ptodo - to fun
+					float curX = ImGui::GetCursorPosX();
+					float padX = ImGui::GetStyle().FramePadding.x;
+					float halfSizeX = ImGui::GetColumnWidth(0) * 0.5f + padX * 2.f;
+					float textSizeX = ImGui::CalcTextSize(id.c_str()).x;
+					ImGui::SetCursorPosX(curX - padX + halfSizeX - textSizeX * 0.5f - padX);
+				}
+				ImGui::Text("%s", id.c_str());
+
+				// Col1 - Task status
+				ImGui::TableSetColumnIndex(1);
 				if (task.Active)
 				{
 					DrawActiveButton();
 				}
 
-				// Col1 - Task text
-				ImGui::TableSetColumnIndex(1);
+				// Col2 - Task text
+				ImGui::TableSetColumnIndex(2);
 
 				if (_currentSelectedTaskIdx == taskIdx)
 				{
@@ -140,9 +162,6 @@ void Window_Tasks::DrawTasks()
 					}
 					else
 					{
-						ImGui::TableSetBgColor(ImGuiTableBgTarget_RowBg1, ImGui::GetColorU32(ImVec4{ 0.8f, 0.3f, 0.f, 1.f }));
-						ImGui::TextColored(ImVec4{ 1.f, 1.f, 1.f, 1.f }, "%04d %s", task.ID, task.Name.c_str());
-
 						if (_selectionChanged)
 						{
 							const float itemMaxY = ImGui::GetItemRectMax().y;
@@ -161,11 +180,14 @@ void Window_Tasks::DrawTasks()
 								ImGui::SetScrollY(ImGui::GetScrollY() - PADDING_TOP + itemMinY);
 							}
 						}
+
+						ImGui::TableSetBgColor(ImGuiTableBgTarget_RowBg1, ImGui::GetColorU32(ImVec4{ 0.8f, 0.3f, 0.f, 1.f }));
+						ImGui::TextColored(ImVec4{ 1.f, 1.f, 1.f, 1.f }, "%s", task.Name.c_str());
 					}
 				}
 				else
 				{
-					ImGui::Text("%04d %s", task.ID, task.Name.c_str());
+					ImGui::Text("%s", task.Name.c_str());
 				}
 
 				++taskIdx;
@@ -224,10 +246,16 @@ void Window_Tasks::DrawNewTaskModal()
 
 void Window_Tasks::DrawActiveButton()
 {
-	ImGui::TableSetColumnIndex(0);
 	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 5.f, 2.f });
 	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.f, 0.5f, 0.f, 1.f });
-	ImGui::Button("active");
+	const char* const text = "active";
+
+	const ImVec2 framePadding = ImGui::GetStyle().FramePadding;
+	const ImVec2 buttonSize = ImGui::CalcTextSize(text) + framePadding * 2.f;
+	// ptodo - do this nicer
+	ImGui::SetCursorPosX(ImGui::GetCursorPosX() - framePadding.x + (ImGui::GetContentRegionAvail().x + framePadding.x) * 0.5f - buttonSize.x * 0.5f + framePadding.x * 0.5f);
+
+	ImGui::Button("active", buttonSize);
 	ImGui::PopStyleVar();
 	ImGui::PopStyleColor();
 }
@@ -374,4 +402,9 @@ void Window_Tasks::OnInput_ConfirmEditTask(const InputEvent& e)
 void Window_Tasks::OnInput_CancelEditTask(const InputEvent& e)
 {
 	StateManagerProxy::Get().SetMode(EApplicationMode::Browse);
+}
+
+void Window_Tasks::OnInput_ExitApp(const InputEvent& e)
+{
+	Application::Exit();
 }

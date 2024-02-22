@@ -15,6 +15,8 @@ void InputManager::Update()
 {
 	ResetInputs();
 
+	UpdateInputs_App();
+
 	switch (StateManagerProxy::Get().GetMode())
 	{
 		case EApplicationMode::Browse:
@@ -50,6 +52,11 @@ void InputManager::UnregisterInputCallback(EInputAction action, const InputCallb
 void InputManager::ResetInputs()
 {
 	_inputPressed.reset();
+}
+
+void InputManager::UpdateInputs_App()
+{
+	SetInputValue(EInputAction::ExitApp, ImGui::IsKeyPressed(ImGuiKey_Escape));
 }
 
 void InputManager::UpdateInputs_Browse()

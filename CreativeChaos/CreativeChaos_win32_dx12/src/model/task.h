@@ -2,6 +2,7 @@
 
 #include "time/time.h"
 #include "util/jsonfwd.h"
+#include "model/taskpriority.h"
 
 enum class ETaskCategory : uint8_t
 {
@@ -48,6 +49,7 @@ struct Task
 	uint32_t ID;
 	std::string Name;
 	ETaskCategory Category;
+	TaskPriority Priority;	// ptodo - serialize
 	bool Active = false;
 	Timestamp CreatedAt;
 	TimeSpan Progress;

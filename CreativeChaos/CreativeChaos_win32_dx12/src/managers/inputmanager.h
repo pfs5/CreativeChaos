@@ -26,6 +26,8 @@ private:
 private:
 	void ResetInputs();
 
+	void UpdateInputs_App();
+
 	void UpdateInputs_Browse();
 	void UpdateInputs_EditTask();
 	void UpdateInputs_NewTask();

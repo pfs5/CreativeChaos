@@ -81,8 +81,18 @@ int main(int, char**)
     //ImGui_ImplWin32_EnableDpiAwareness();
     WNDCLASSEXW wc = { sizeof(wc), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr, L"ImGui Example", nullptr };
     ::RegisterClassExW(&wc);
+
     const std::string appTitle = App::GetAppString();
     const std::wstring appTitleW {appTitle.begin(), appTitle.end()};
+
+	// Check if window exists
+    if (HWND existingWindow = ::FindWindow(0, appTitleW.c_str()))
+    {
+        //::SetForegroundWindow(existingWindow);
+        ::ShowWindow(existingWindow, SW_SHOW);
+        return 0;
+    }
+
     HWND hwnd = ::CreateWindowW(wc.lpszClassName, appTitleW.c_str(), WS_OVERLAPPEDWINDOW, 100, 100, 1280, 800, nullptr, nullptr, wc.hInstance, nullptr);
 
     // Initialize Direct3D
@@ -165,8 +175,13 @@ int main(int, char**)
             if (msg.message == WM_QUIT)
                 done = true;
         }
+
+        done |= !app.IsOpen();
+
         if (done)
-            break;
+        {
+			break;
+        }
 
         // Start the Dear ImGui frame
         ImGui_ImplDX12_NewFrame();
