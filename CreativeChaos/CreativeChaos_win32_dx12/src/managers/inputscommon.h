@@ -41,3 +41,5 @@ struct InputEvent
 {
 
 };
+
+using InputCallback = std::function<void(const InputEvent& e)>;

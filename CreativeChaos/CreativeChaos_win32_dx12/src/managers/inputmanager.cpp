@@ -19,9 +19,9 @@ void InputManager::Update()
 
 	switch (StateManagerProxy::Get().GetMode())
 	{
-		case EApplicationMode::Browse:
+		case EApplicationMode::Default:
 		{
-			UpdateInputs_Browse();
+			Default();
 			break;
 		}
 
@@ -31,9 +31,9 @@ void InputManager::Update()
 			break;
 		}
 
-		case EApplicationMode::NewTask:
+		case EApplicationMode::Modal:
 		{
-			UpdateInputs_NewTask();
+			UpdateInputs_Modal();
 			break;
 		}
 	}
@@ -59,7 +59,7 @@ void InputManager::UpdateInputs_App()
 	SetInputValue(EInputAction::ExitApp, ImGui::IsKeyPressed(ImGuiKey_Escape));
 }
 
-void InputManager::UpdateInputs_Browse()
+void InputManager::Default()
 {
 	SetInputValue(EInputAction::NextTask,			!ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyPressed(ImGuiKey_DownArrow));
 	SetInputValue(EInputAction::PreviousTask,		!ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyPressed(ImGuiKey_UpArrow));
@@ -92,7 +92,7 @@ void InputManager::UpdateInputs_EditTask()
 	SetInputValue(EInputAction::CancelEditTask,		ImGui::IsKeyPressed(ImGuiKey_Escape));
 }
 
-void InputManager::UpdateInputs_NewTask()
+void InputManager::UpdateInputs_Modal()
 {
 	SetInputValue(EInputAction::ConfirmNewTask,		ImGui::IsKeyPressed(ImGuiKey_Enter));
 	SetInputValue(EInputAction::CancelNewTask,		ImGui::IsKeyPressed(ImGuiKey_Escape));

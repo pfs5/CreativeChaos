@@ -105,6 +105,19 @@ void TaskManager::SetTaskCategory(TaskPtr ptr, ETaskCategory category)
 	}
 }
 
+void TaskManager::SetTaskPriority(TaskPtr ptr, TaskPriority prio)
+{
+	Task& task = GetTask(ptr);
+
+	const TaskPriority oldPrio = task.Priority;
+	task.Priority = prio;
+
+	if (oldPrio != prio)
+	{
+		MarkDirty();
+	}
+}
+
 void TaskManager::MarkDirty()
 {
 	SaveTasks();

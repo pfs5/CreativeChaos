@@ -12,6 +12,8 @@ public:
 	TaskView_Categories();
 
 	void UpdateTasks() override;
+	void ChangeTaskCollectionUp(TaskManager::TaskPtr task)  const override;
+	void ChangeTaskCollectionDown(TaskManager::TaskPtr task) const override;
 
 private:
 	TaskCollection& GetCollection(ETaskCategory category);

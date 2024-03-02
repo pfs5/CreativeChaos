@@ -6,12 +6,17 @@ struct TaskCollection
 	std::string Title;
 	std::vector<TaskManager::TaskPtr> Tasks;
 	bool IsOpen = true;
+	bool ShowIndex = true;
 };
 
 class TaskView
 {
 public:
 	virtual void UpdateTasks() {}
+
+	// We provide controls to move tasks between collections. Since collections depend on task views, we leave this responsibilty to task view implementations.
+	virtual void ChangeTaskCollectionUp(TaskManager::TaskPtr task)  const {}
+	virtual void ChangeTaskCollectionDown(TaskManager::TaskPtr task) const {}
 
 	const std::vector<TaskCollection>& GetCollections() const { return _collections; }
 	std::vector<TaskCollection>& GetCollections() { return _collections; }

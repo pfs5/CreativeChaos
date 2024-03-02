@@ -28,9 +28,9 @@ private:
 
 	void UpdateInputs_App();
 
-	void UpdateInputs_Browse();
+	void Default();
 	void UpdateInputs_EditTask();
-	void UpdateInputs_NewTask();
+	void UpdateInputs_Modal();
 
 	bool GetInputValue(EInputAction input) const { return _inputPressed.test((std::underlying_type_t<EInputAction>) input); }
 	void SetInputValue(EInputAction input, bool value);

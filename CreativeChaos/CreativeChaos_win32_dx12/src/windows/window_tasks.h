@@ -1,6 +1,7 @@
 #pragma once
 #include "core/window.h"
 #include "managers/TaskManager.h"
+#include "managers/inputscommon.h"
 
 struct InputEvent;
 class TaskView;
@@ -11,7 +12,8 @@ public:
 	Window_Tasks();
 	~Window_Tasks();
 
-	void OnRegister() override;
+protected:
+	void SetupInputs() override;
 
 private:
 	struct TaskList

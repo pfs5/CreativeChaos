@@ -46,7 +46,9 @@ public:
 
 	void StartTask(TaskPtr ptr);
 	void StopTask(TaskPtr ptr);
+
 	void SetTaskCategory(TaskPtr ptr, ETaskCategory category);
+	void SetTaskPriority(TaskPtr ptr, TaskPriority prio);
 
 	void MarkDirty();
 

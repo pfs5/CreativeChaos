@@ -2,6 +2,7 @@
 #include "taskviews/taskview_categories.h"
 
 #include "managers/TaskManager.h"
+#include "model/task.h"
 
 TaskView_Categories::TaskView_Categories()
 {
@@ -28,6 +29,52 @@ void TaskView_Categories::UpdateTasks()
 	tcollTrash.Tasks.clear();
 	tcollTrash.Tasks.reserve(64);
 	TaskManagerProxy::Get().FindTasksWithCategory(tcollTrash.Tasks, ETaskCategory::Trash);
+}
+
+void TaskView_Categories::ChangeTaskCollectionUp(TaskManager::TaskPtr task) const
+{
+	const Task& t = TaskManagerProxy::Get().GetTask(task);
+	switch (t.Category)
+	{
+		case ETaskCategory::Main:
+		{
+			// Can't go up from here.
+			break;
+		}
+		case ETaskCategory::Backlog:
+		{
+			TaskManagerProxy::Get().SetTaskCategory(task, ETaskCategory::Main);
+			break;
+		}
+		case ETaskCategory::Trash:
+		{
+			TaskManagerProxy::Get().SetTaskCategory(task, ETaskCategory::Backlog);
+			break;
+		}
+	}
+}
+
+void TaskView_Categories::ChangeTaskCollectionDown(TaskManager::TaskPtr task) const
+{
+	const Task& t = TaskManagerProxy::Get().GetTask(task);
+	switch (t.Category)
+	{
+		case ETaskCategory::Main:
+		{
+			TaskManagerProxy::Get().SetTaskCategory(task, ETaskCategory::Backlog);
+			break;
+		}
+		case ETaskCategory::Backlog:
+		{
+			TaskManagerProxy::Get().SetTaskCategory(task, ETaskCategory::Trash);
+			break;
+		}
+		case ETaskCategory::Trash:
+		{
+			// Can't go down from here.
+			break;
+		}
+	}
 }
 
 TaskCollection& TaskView_Categories::GetCollection(ETaskCategory category)

@@ -1,32 +1,33 @@
 #include "pch.h"
 #include "windows/window_tasks.h"
 
+#include "core/Application.h"
+#include "core/staticconfig.h"
 #include "imgui.h"
-#include "model/task.h"
-#include "managers/TaskManager.h"
-#include "util/imguihelpers.h"
-#include "util/tostring.h"
 #include "managers/inputmanager.h"
 #include "managers/statemanager.h"
-#include "core/staticconfig.h"
-
-#include "taskviews/taskview_categories.h"
+#include "managers/TaskManager.h"
+#include "model/task.h"
 #include "taskviews/taskview_activity.h"
-#include "core/Application.h"
+#include "taskviews/taskview_categories.h"
+#include "taskviews/taskview_prio.h"
+#include "util/imguihelpers.h"
+#include "util/tostring.h"
+#include "modalwindow_newtask.h"
 
 Window_Tasks::Window_Tasks()
 {
+	_taskViews.emplace_back(new TaskView_Prio());
 	_taskViews.emplace_back(new TaskView_Categories());
 	_taskViews.emplace_back(new TaskView_Activity());
 }
 
 Window_Tasks::~Window_Tasks() = default;
 
-void Window_Tasks::OnRegister()
+void Window_Tasks::SetupInputs()
 {
-	// Setup inputs
 	InputManager& inputManager = InputManagerProxy::Get();
-	
+
 	RegisterInputCallbackTemplated<Window_Tasks>(this, EInputAction::NextTask, &Window_Tasks::OnInput_NextTask);
 	RegisterInputCallbackTemplated<Window_Tasks>(this, EInputAction::PreviousTask, &Window_Tasks::OnInput_PreviousTask);
 	RegisterInputCallbackTemplated<Window_Tasks>(this, EInputAction::NextTaskView, &Window_Tasks::OnInput_NextTaskView);
@@ -65,7 +66,6 @@ void Window_Tasks::OnDraw()
 
 	UpdateTasks();
 	DrawTasks();
-	DrawNewTaskModal();
 
 	_selectionChanged = false;
 }
@@ -92,7 +92,9 @@ void Window_Tasks::DrawTasks()
 	{
 		TaskCollection& taskCollection = collections[collectionIdx];
 
-		std::string headerTitle = std::format("[{}] {}", collectionIdx + 1, taskCollection.Title.c_str());
+		std::string headerTitle = taskCollection.ShowIndex ?
+			std::format("[{}] {}", collectionIdx + 1, taskCollection.Title.c_str()) :
+			std::format("{}", taskCollection.Title.c_str());
 		ImGui::SetNextItemOpen(taskCollection.IsOpen);
 		taskCollection.IsOpen = ImGui::CollapsingHeader(headerTitle.c_str(), ImGuiTreeNodeFlags_DefaultOpen);
 		if (taskCollection.IsOpen)
@@ -159,7 +161,7 @@ void Window_Tasks::DrawTasks()
 						ImGui::InputText("###TaskRename", _inputBuffer, INPUT_BUFFER_SIZE);
 						ImGui::PopItemWidth();
 						ImGui::SetKeyboardFocusHere(-1);
-					}
+					} 
 					else
 					{
 						if (_selectionChanged)
@@ -200,48 +202,6 @@ void Window_Tasks::DrawTasks()
 
 	ImGui::NewLine();
 	ImGui::NewLine();
-}
-
-void Window_Tasks::DrawNewTaskModal()
-{
-	if (StateManagerProxy::Get().GetMode() != EApplicationMode::NewTask)
-	{
-		return;
-	}
-
-	const char* const popupName = "New Task";
-	if (!ImGui::IsPopupOpen(popupName))
-	{
-		ClearInputBuffer();
-		ImGui::OpenPopup(popupName);
-	}
-
-	const ImVec2 center = ImGui::GetMainViewport()->GetCenter();
-	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-	ImGui::SetNextWindowSize(ImVec2{ 500.f, 200.f });
-
-	if (ImGui::BeginPopupModal(popupName, nullptr, ImGuiWindowFlags_AlwaysAutoResize))
-	{
-		ImGui::Text("ENTER - Accept | ESC - Cancel");
-
-		ImGui::SetNextItemWidth(400.f);
-		ImGui::InputText("###NewTaskInputText", _inputBuffer, INPUT_BUFFER_SIZE);
-		ImGui::SetKeyboardFocusHere(-1);
-
-		if (InputManagerProxy::Get().IsInputPressed(EInputAction::ConfirmNewTask))
-		{
-			TaskManagerProxy::Get().CreateNewTask(_inputBuffer, ETaskCategory::Main);
-			StateManagerProxy::Get().SetMode(EApplicationMode::Browse);
-			ImGui::CloseCurrentPopup();
-		}
-		else if (InputManagerProxy::Get().IsInputPressed(EInputAction::CancelNewTask))
-		{
-			StateManagerProxy::Get().SetMode(EApplicationMode::Browse);
-			ImGui::CloseCurrentPopup();
-		}
-
-		ImGui::EndPopup();
-	}
 }
 
 void Window_Tasks::DrawActiveButton()
@@ -355,7 +315,8 @@ void Window_Tasks::OnInput_ToggleTaskActive(const InputEvent& e)
 
 void Window_Tasks::OnInput_NewTask(const InputEvent& e)
 {
-	StateManagerProxy::Get().SetMode(EApplicationMode::NewTask);
+	//StateManagerProxy::Get().SetMode(EApplicationMode::Modal);
+	PushModal<ModalWindow_NewTask>();
 }
 
 void Window_Tasks::OnInput_DeleteTask(const InputEvent& e)
@@ -395,13 +356,13 @@ void Window_Tasks::OnInput_ConfirmEditTask(const InputEvent& e)
 	if (currentSelectedTask.IsValid())
 	{
 		TaskManagerProxy::Get().GetTask(currentSelectedTask).Name = _inputBuffer;
-		StateManagerProxy::Get().SetMode(EApplicationMode::Browse);
+		StateManagerProxy::Get().SetMode(EApplicationMode::Default);
 	}
 }
 
 void Window_Tasks::OnInput_CancelEditTask(const InputEvent& e)
 {
-	StateManagerProxy::Get().SetMode(EApplicationMode::Browse);
+	StateManagerProxy::Get().SetMode(EApplicationMode::Default);
 }
 
 void Window_Tasks::OnInput_ExitApp(const InputEvent& e)

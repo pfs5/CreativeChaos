@@ -6,18 +6,18 @@
 
 enum class EApplicationMode : uint8_t
 {
-	Browse,
+	Default,
 	EditTask,
-	NewTask
+	Modal
 };
 
 inline const char* ToString(EApplicationMode applicationMode)
 {
 	switch (applicationMode)
 	{
-		case EApplicationMode::Browse: return "Browse";
+		case EApplicationMode::Default: return "Default";
 		case EApplicationMode::EditTask: return "EditTask";
-		case EApplicationMode::NewTask: return "NewTask";
+		case EApplicationMode::Modal: return "Modal";
 	}
 
 	return "";
@@ -35,7 +35,7 @@ public:
 	void SetCurrentSelectedTask(TaskManager::TaskPtr value) { _currentSelectedTask = value; }
 
 private:
-	EApplicationMode _mode = EApplicationMode::Browse;
+	EApplicationMode _mode = EApplicationMode::Default;
 	TaskManager::TaskPtr _currentSelectedTask;
 
 };

@@ -144,6 +144,7 @@
     <ClCompile Include="src\core\window.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\managers\debugmanager.cpp" />
+    <ClCompile Include="src\managers\inputhandler.cpp" />
     <ClCompile Include="src\managers\inputmanager.cpp" />
     <ClCompile Include="src\managers\statemanager.cpp" />
     <ClCompile Include="src\managers\taskmanager.cpp" />
@@ -155,10 +156,13 @@
     </ClCompile>
     <ClCompile Include="src\taskviews\taskview_activity.cpp" />
     <ClCompile Include="src\taskviews\taskview_categories.cpp" />
+    <ClCompile Include="src\taskviews\taskview_prio.cpp" />
     <ClCompile Include="src\time\time.cpp" />
     <ClCompile Include="src\time\time2.cpp" />
     <ClCompile Include="src\util\debug.cpp" />
     <ClCompile Include="src\util\imguioperators.cpp" />
+    <ClCompile Include="src\windows\modalwindow.cpp" />
+    <ClCompile Include="src\windows\modalwindow_newtask.cpp" />
     <ClCompile Include="src\windows\window_debug.cpp" />
     <ClCompile Include="src\windows\window_log.cpp" />
     <ClCompile Include="src\windows\window_properties.cpp" />
@@ -173,6 +177,7 @@
     <ClInclude Include="src\external\nlohmann_json.hpp" />
     <ClInclude Include="src\external\nlohmann_json_fwd.hpp" />
     <ClInclude Include="src\managers\debugmanager.h" />
+    <ClInclude Include="src\managers\inputhandler.h" />
     <ClInclude Include="src\managers\inputmanager.h" />
     <ClInclude Include="src\managers\inputscommon.h" />
     <ClInclude Include="src\managers\statemanager.h" />
@@ -183,6 +188,7 @@
     <ClInclude Include="src\model\task.h" />
     <ClInclude Include="src\taskviews\taskview_activity.h" />
     <ClInclude Include="src\taskviews\taskview_categories.h" />
+    <ClInclude Include="src\taskviews\taskview_prio.h" />
     <ClInclude Include="src\time\time.h" />
     <ClInclude Include="src\time\time2.h" />
     <ClInclude Include="src\util\asserts.h" />
@@ -195,6 +201,8 @@
     <ClInclude Include="src\util\proxy.h" />
     <ClInclude Include="src\util\tostring.h" />
     <ClInclude Include="src\util\util.h" />
+    <ClInclude Include="src\windows\modalwindow.h" />
+    <ClInclude Include="src\windows\modalwindow_newtask.h" />
     <ClInclude Include="src\windows\window_debug.h" />
     <ClInclude Include="src\windows\window_log.h" />
     <ClInclude Include="src\windows\window_properties.h" />

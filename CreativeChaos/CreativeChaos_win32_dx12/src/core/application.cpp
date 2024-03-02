@@ -88,7 +88,7 @@ void Application::Update()
 
 	if (newTaskPressed)
 	{
-		StateManagerProxy::Get().SetMode(EApplicationMode::NewTask);
+		StateManagerProxy::Get().SetMode(EApplicationMode::Modal);
 	}
 
 	if (showDemoWindow)
