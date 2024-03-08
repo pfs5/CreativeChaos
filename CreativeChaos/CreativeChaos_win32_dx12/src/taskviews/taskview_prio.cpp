@@ -31,7 +31,7 @@ void TaskView_Prio::UpdateTasks()
 	}
 }
 
-void TaskView_Prio::ChangeTaskCollectionUp(TaskManager::TaskPtr task) const
+void TaskView_Prio::ChangeTaskCollectionUp(TaskPtr task) const
 {
 	const Task& t = TaskManagerProxy::Get().GetTask(task);
 	
@@ -41,7 +41,7 @@ void TaskView_Prio::ChangeTaskCollectionUp(TaskManager::TaskPtr task) const
 	TaskManagerProxy::Get().SetTaskPriority(task, newPrio);
 }
 
-void TaskView_Prio::ChangeTaskCollectionDown(TaskManager::TaskPtr task) const
+void TaskView_Prio::ChangeTaskCollectionDown(TaskPtr task) const
 {
 	const Task& t = TaskManagerProxy::Get().GetTask(task);
 

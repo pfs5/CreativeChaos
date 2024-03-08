@@ -19,6 +19,13 @@ public:
 
 	}
 
+	template <typename IntegerType, typename std::enable_if_t<std::is_integral<IntegerType>::value, bool> = true>
+	TaskPriority(IntegerType value) :
+		_value{ (uint8_t)std::clamp(value, (IntegerType)MIN_PRIO, (IntegerType)MAX_PRIO) }
+	{
+
+	}
+
 	bool operator==(const TaskPriority& other) const { return _value == other._value; }
 	bool operator!=(const TaskPriority& other) const { return _value != other._value; }
 

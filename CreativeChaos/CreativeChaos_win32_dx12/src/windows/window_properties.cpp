@@ -7,7 +7,7 @@
 
 void Window_Properties::OnDraw()
 {
-	const TaskManager::TaskPtr currentSelectedTask = StateManagerProxy::Get().GetCurrentSelectedTask();
+	const TaskPtr currentSelectedTask = StateManagerProxy::Get().GetCurrentSelectedTask();
 	if (!currentSelectedTask.IsValid())
 	{
 		return;

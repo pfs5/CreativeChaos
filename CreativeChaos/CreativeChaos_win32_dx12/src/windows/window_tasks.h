@@ -19,7 +19,7 @@ private:
 	struct TaskList
 	{
 		std::string Title;
-		std::vector<TaskManager::TaskPtr> Tasks;
+		std::vector<TaskPtr> Tasks;
 		bool Open = true;
 	};
 
@@ -66,8 +66,10 @@ private:
 	void OnInput_ToggleTaskActive(const InputEvent& e);
 	void OnInput_NewTask(const InputEvent& e);
 	void OnInput_DeleteTask(const InputEvent& e);
+	void OnInput_ChangeTaskPrio(const InputEvent& e);
 	void OnInput_ChangeTaskCategory(const InputEvent& e);
 	void OnInput_ConfirmEditTask(const InputEvent& e);
 	void OnInput_CancelEditTask(const InputEvent& e);
+	void OnInput_MinimizeApp(const InputEvent& e);
 	void OnInput_ExitApp(const InputEvent& e);
 };

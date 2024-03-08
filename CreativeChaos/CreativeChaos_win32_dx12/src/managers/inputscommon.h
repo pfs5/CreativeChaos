@@ -23,15 +23,17 @@ enum class EInputAction : uint8_t
 	EditTask,
 	NewTask,
 	DeleteTask,
+	ChangeTaskPrio,
 	ChangeTaskCategory,
 	ToggleTaskActive,
 
 	ConfirmEditTask,
 	CancelEditTask,
 
-	ConfirmNewTask,
-	CancelNewTask,
+	Confirm,
+	Cancel,
 
+	MinimizeApp,
 	ExitApp,
 
 	Count

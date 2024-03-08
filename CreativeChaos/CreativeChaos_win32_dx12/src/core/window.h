@@ -32,7 +32,7 @@ protected:
 	}
 
 	template <typename ModalWindowClass, typename... Args>
-	void PushModal(const Args&&... params)
+	void PushModal(Args&&... params)
 	{
 		static_assert(std::is_base_of_v<ModalWindow, ModalWindowClass>);
 		_modalWindowsStack.emplace_back(new ModalWindowClass(std::forward<Args>(params)...));

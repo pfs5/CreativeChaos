@@ -56,6 +56,7 @@ void InputManager::ResetInputs()
 
 void InputManager::UpdateInputs_App()
 {
+	SetInputValue(EInputAction::MinimizeApp, ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyPressed(ImGuiKey_M));
 	SetInputValue(EInputAction::ExitApp, ImGui::IsKeyPressed(ImGuiKey_Escape));
 }
 
@@ -82,6 +83,7 @@ void InputManager::Default()
 	SetInputValue(EInputAction::EditTask,			ImGui::IsKeyPressed(ImGuiKey_F2));
 	SetInputValue(EInputAction::NewTask,			ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyPressed(ImGuiKey_N));
 	SetInputValue(EInputAction::DeleteTask,			ImGui::IsKeyPressed(ImGuiKey_Delete));
+	SetInputValue(EInputAction::ChangeTaskPrio,		ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyPressed(ImGuiKey_P));
 	SetInputValue(EInputAction::ChangeTaskCategory, ImGui::IsKeyPressed(ImGuiKey_Space));
 	SetInputValue(EInputAction::ToggleTaskActive,	ImGui::IsKeyPressed(ImGuiKey_Enter));
 }
@@ -94,8 +96,8 @@ void InputManager::UpdateInputs_EditTask()
 
 void InputManager::UpdateInputs_Modal()
 {
-	SetInputValue(EInputAction::ConfirmNewTask,		ImGui::IsKeyPressed(ImGuiKey_Enter));
-	SetInputValue(EInputAction::CancelNewTask,		ImGui::IsKeyPressed(ImGuiKey_Escape));
+	SetInputValue(EInputAction::Confirm,		ImGui::IsKeyPressed(ImGuiKey_Enter));
+	SetInputValue(EInputAction::Cancel,		ImGui::IsKeyPressed(ImGuiKey_Escape));
 }
 
 void InputManager::SetInputValue(EInputAction input, bool value)

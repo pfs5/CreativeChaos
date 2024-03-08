@@ -6,8 +6,6 @@ class ModalWindow_NewTask : public ModalWindow
 {
 	using Super = ModalWindow;
 
-public:
-
 protected:
 	void OnDraw() final;
 	void OnOpen() final;
@@ -24,7 +22,7 @@ private:
 	void ClearInputBuffer() { _inputBuffer[0] = '\0'; }
 
 	// Inputs
-	void OnInput_ConfirmNewTask(const InputEvent& e);
+	void OnInput_Confirm(const InputEvent& e);
 	void OnInput_Cancel(const InputEvent& e);
 
 };

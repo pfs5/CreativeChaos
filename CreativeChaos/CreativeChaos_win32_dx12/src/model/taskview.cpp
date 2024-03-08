@@ -27,11 +27,11 @@ uint32_t TaskView::GetNumVisibleTasks() const
 
 }
 
-TaskCollection* TaskView::FindCollectionForTask(TaskManager::TaskPtr task)
+TaskCollection* TaskView::FindCollectionForTask(TaskPtr task)
 {
 	for (TaskCollection& collection : _collections)
 	{
-		if (std::any_of(collection.Tasks.begin(), collection.Tasks.end(), [task](const TaskManager::TaskPtr& t) { return task == t; }))
+		if (std::any_of(collection.Tasks.begin(), collection.Tasks.end(), [task](const TaskPtr& t) { return task == t; }))
 		{
 			return &collection;
 		}

@@ -26,8 +26,8 @@ void ModalWindow_NewTask::SetupInputs(InputHandler& inputHandler)
 {
 	Super::SetupInputs(inputHandler);
 
-	inputHandler.RegisterInputCallbackTemplated<ModalWindow_NewTask>(this, EInputAction::ConfirmNewTask, &ModalWindow_NewTask::OnInput_ConfirmNewTask);
-	inputHandler.RegisterInputCallbackTemplated<ModalWindow_NewTask>(this, EInputAction::CancelNewTask, &ModalWindow_NewTask::OnInput_Cancel);
+	inputHandler.RegisterInputCallbackTemplated<ModalWindow_NewTask>(this, EInputAction::Confirm, &ModalWindow_NewTask::OnInput_Confirm);
+	inputHandler.RegisterInputCallbackTemplated<ModalWindow_NewTask>(this, EInputAction::Cancel, &ModalWindow_NewTask::OnInput_Cancel);
 }
 
 ImVec2 ModalWindow_NewTask::GetModalSize() const
@@ -35,7 +35,7 @@ ImVec2 ModalWindow_NewTask::GetModalSize() const
 	return ImVec2{ 600.f, 100.f };
 }
 
-void ModalWindow_NewTask::OnInput_ConfirmNewTask(const InputEvent& e)
+void ModalWindow_NewTask::OnInput_Confirm(const InputEvent& e)
 {
 	TaskManagerProxy::Get().CreateNewTask(_inputBuffer, ETaskCategory::Main);
 	CloseModal();

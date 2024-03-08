@@ -25,6 +25,9 @@
     <ClCompile Include="src\windows\modalwindow.cpp" />
     <ClCompile Include="src\windows\modalwindow_newtask.cpp" />
     <ClCompile Include="src\managers\inputhandler.cpp" />
+    <ClCompile Include="src\windows\modalwindow_changeprio.cpp" />
+    <ClCompile Include="src\managers\windowmanager.cpp" />
+    <ClCompile Include="src\platform\windowmanager_windows.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\application.h" />
@@ -65,6 +68,10 @@
     <ClInclude Include="src\windows\modalwindow.h" />
     <ClInclude Include="src\windows\modalwindow_newtask.h" />
     <ClInclude Include="src\managers\inputhandler.h" />
+    <ClInclude Include="src\windows\modalwindow_changeprio.h" />
+    <ClInclude Include="src\model\taskscommon.h" />
+    <ClInclude Include="src\managers\windowmanager.h" />
+    <ClInclude Include="src\platform\windowmanager_windows.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="src\natvis.natvis" />

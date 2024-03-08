@@ -31,7 +31,7 @@ void TaskView_Categories::UpdateTasks()
 	TaskManagerProxy::Get().FindTasksWithCategory(tcollTrash.Tasks, ETaskCategory::Trash);
 }
 
-void TaskView_Categories::ChangeTaskCollectionUp(TaskManager::TaskPtr task) const
+void TaskView_Categories::ChangeTaskCollectionUp(TaskPtr task) const
 {
 	const Task& t = TaskManagerProxy::Get().GetTask(task);
 	switch (t.Category)
@@ -54,7 +54,7 @@ void TaskView_Categories::ChangeTaskCollectionUp(TaskManager::TaskPtr task) cons
 	}
 }
 
-void TaskView_Categories::ChangeTaskCollectionDown(TaskManager::TaskPtr task) const
+void TaskView_Categories::ChangeTaskCollectionDown(TaskPtr task) const
 {
 	const Task& t = TaskManagerProxy::Get().GetTask(task);
 	switch (t.Category)

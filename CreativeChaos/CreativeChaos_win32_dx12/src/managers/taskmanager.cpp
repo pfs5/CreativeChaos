@@ -6,12 +6,12 @@
 #include "util/performance.h"
 #include "debugmanager.h"
 
-Task& TaskManager::TaskPtr::GetTask() const
+Task& TaskPtr::GetTask() const
 {
 	return TaskManagerProxy::Get().GetTask(Index);
 }
 
-TaskManager::TaskManager::TaskPtr& TaskManager::TaskPtr::operator++()
+TaskPtr& TaskPtr::operator++()
 {
 	const uint32_t numTasks = TaskManagerProxy::Get().GetNumTasks();
 	if (numTasks == 0)
@@ -23,7 +23,7 @@ TaskManager::TaskManager::TaskPtr& TaskManager::TaskPtr::operator++()
 	return *this;
 }
 
-TaskManager::TaskManager::TaskPtr& TaskManager::TaskPtr::operator--()
+TaskPtr& TaskPtr::operator--()
 {
 	const uint32_t numTasks = TaskManagerProxy::Get().GetNumTasks();
 	if (numTasks == 0)
@@ -36,7 +36,7 @@ TaskManager::TaskManager::TaskPtr& TaskManager::TaskPtr::operator--()
 	return *this;
 }
 
-const TaskManager::TaskPtr TaskManager::TaskPtr::Invalid;
+const TaskPtr TaskPtr::Invalid;
 
 void TaskManager::Initialize()
 {

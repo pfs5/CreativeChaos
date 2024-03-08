@@ -148,12 +148,14 @@
     <ClCompile Include="src\managers\inputmanager.cpp" />
     <ClCompile Include="src\managers\statemanager.cpp" />
     <ClCompile Include="src\managers\taskmanager.cpp" />
+    <ClCompile Include="src\managers\windowmanager.cpp" />
     <ClCompile Include="src\model\task.cpp" />
     <ClCompile Include="src\model\taskview.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\platform\windowmanager_windows.cpp" />
     <ClCompile Include="src\taskviews\taskview_activity.cpp" />
     <ClCompile Include="src\taskviews\taskview_categories.cpp" />
     <ClCompile Include="src\taskviews\taskview_prio.cpp" />
@@ -162,6 +164,7 @@
     <ClCompile Include="src\util\debug.cpp" />
     <ClCompile Include="src\util\imguioperators.cpp" />
     <ClCompile Include="src\windows\modalwindow.cpp" />
+    <ClCompile Include="src\windows\modalwindow_changeprio.cpp" />
     <ClCompile Include="src\windows\modalwindow_newtask.cpp" />
     <ClCompile Include="src\windows\window_debug.cpp" />
     <ClCompile Include="src\windows\window_log.cpp" />
@@ -182,10 +185,13 @@
     <ClInclude Include="src\managers\inputscommon.h" />
     <ClInclude Include="src\managers\statemanager.h" />
     <ClInclude Include="src\managers\taskmanager.h" />
+    <ClInclude Include="src\managers\windowmanager.h" />
     <ClInclude Include="src\model\taskpriority.h" />
+    <ClInclude Include="src\model\taskscommon.h" />
     <ClInclude Include="src\model\taskview.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\model\task.h" />
+    <ClInclude Include="src\platform\windowmanager_windows.h" />
     <ClInclude Include="src\taskviews\taskview_activity.h" />
     <ClInclude Include="src\taskviews\taskview_categories.h" />
     <ClInclude Include="src\taskviews\taskview_prio.h" />
@@ -202,6 +208,7 @@
     <ClInclude Include="src\util\tostring.h" />
     <ClInclude Include="src\util\util.h" />
     <ClInclude Include="src\windows\modalwindow.h" />
+    <ClInclude Include="src\windows\modalwindow_changeprio.h" />
     <ClInclude Include="src\windows\modalwindow_newtask.h" />
     <ClInclude Include="src\windows\window_debug.h" />
     <ClInclude Include="src\windows\window_log.h" />

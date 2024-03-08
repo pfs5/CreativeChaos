@@ -14,6 +14,7 @@
 #include "util/imguihelpers.h"
 #include "util/tostring.h"
 #include "modalwindow_newtask.h"
+#include "modalwindow_changeprio.h"
 
 Window_Tasks::Window_Tasks()
 {
@@ -46,11 +47,13 @@ void Window_Tasks::SetupInputs()
 	RegisterInputCallbackTemplated<Window_Tasks>(this, EInputAction::ToggleTaskActive, &Window_Tasks::OnInput_ToggleTaskActive);
 	RegisterInputCallbackTemplated<Window_Tasks>(this, EInputAction::NewTask, &Window_Tasks::OnInput_NewTask);
 	RegisterInputCallbackTemplated<Window_Tasks>(this, EInputAction::DeleteTask, &Window_Tasks::OnInput_DeleteTask);
+	RegisterInputCallbackTemplated<Window_Tasks>(this, EInputAction::ChangeTaskPrio, &Window_Tasks::OnInput_ChangeTaskPrio);
 	RegisterInputCallbackTemplated<Window_Tasks>(this, EInputAction::ChangeTaskCategory, &Window_Tasks::OnInput_ChangeTaskCategory);
 	RegisterInputCallbackTemplated<Window_Tasks>(this, EInputAction::ConfirmEditTask, &Window_Tasks::OnInput_ConfirmEditTask);
 	RegisterInputCallbackTemplated<Window_Tasks>(this, EInputAction::CancelEditTask, &Window_Tasks::OnInput_CancelEditTask);
 
 	// ptodo - move this somewhere else
+	RegisterInputCallbackTemplated<Window_Tasks>(this, EInputAction::MinimizeApp, &Window_Tasks::OnInput_MinimizeApp);
 	RegisterInputCallbackTemplated<Window_Tasks>(this, EInputAction::ExitApp, &Window_Tasks::OnInput_ExitApp);
 }
 
@@ -120,7 +123,7 @@ void Window_Tasks::DrawTasks()
 			ImGui::TableSetupColumn("TaskStatus", ImGuiTableColumnFlags_WidthFixed, COLWIDTH_STATUS);
 			ImGui::TableSetupColumn("TaskText", ImGuiTableColumnFlags_WidthStretch);
 
-			for (TaskManager::TaskPtr taskPtr : taskCollection.Tasks)
+			for (TaskPtr taskPtr : taskCollection.Tasks)
 			{
 				Task& task = taskPtr.GetTask();
 
@@ -231,6 +234,11 @@ size_t Window_Tasks::GetTotalNumTasks() const
 void Window_Tasks::OnInput_NextTask(const InputEvent& e)
 {
 	const uint32_t totalTasksSize = (uint32_t)GetTotalNumTasks();
+	if (totalTasksSize == 0)
+	{
+		return;
+	}
+
 	_currentSelectedTaskIdx = (_currentSelectedTaskIdx + 1) % totalTasksSize;
 
 	_selectionChanged = true;
@@ -286,7 +294,7 @@ void Window_Tasks::OnInput_ScrollUp(const InputEvent& e)
 
 void Window_Tasks::OnInput_EditTask(const InputEvent& e)
 {
-	const TaskManager::TaskPtr currentSelectedTask = StateManagerProxy::Get().GetCurrentSelectedTask();
+	const TaskPtr currentSelectedTask = StateManagerProxy::Get().GetCurrentSelectedTask();
 	if (currentSelectedTask.IsValid())
 	{
 		StateManagerProxy::Get().SetMode(EApplicationMode::EditTask);
@@ -298,7 +306,7 @@ void Window_Tasks::OnInput_EditTask(const InputEvent& e)
 
 void Window_Tasks::OnInput_ToggleTaskActive(const InputEvent& e)
 {
-	const TaskManager::TaskPtr currentSelectedTask = StateManagerProxy::Get().GetCurrentSelectedTask();
+	const TaskPtr currentSelectedTask = StateManagerProxy::Get().GetCurrentSelectedTask();
 	if (currentSelectedTask.IsValid())
 	{
 		const bool isTaskActive = currentSelectedTask.GetTask().Active;
@@ -315,22 +323,30 @@ void Window_Tasks::OnInput_ToggleTaskActive(const InputEvent& e)
 
 void Window_Tasks::OnInput_NewTask(const InputEvent& e)
 {
-	//StateManagerProxy::Get().SetMode(EApplicationMode::Modal);
 	PushModal<ModalWindow_NewTask>();
 }
 
 void Window_Tasks::OnInput_DeleteTask(const InputEvent& e)
 {
-	const TaskManager::TaskPtr currentSelectedTask = StateManagerProxy::Get().GetCurrentSelectedTask();
+	const TaskPtr currentSelectedTask = StateManagerProxy::Get().GetCurrentSelectedTask();
 	if (currentSelectedTask.IsValid())
 	{
 		TaskManagerProxy::Get().SetTaskCategory(currentSelectedTask, ETaskCategory::Trash);
 	}
 }
 
+void Window_Tasks::OnInput_ChangeTaskPrio(const InputEvent& e)
+{
+	const TaskPtr currentSelectedTask = StateManagerProxy::Get().GetCurrentSelectedTask();
+	if (currentSelectedTask.IsValid())
+	{
+		PushModal<ModalWindow_ChangePrio>(currentSelectedTask);
+	}
+}
+
 void Window_Tasks::OnInput_ChangeTaskCategory(const InputEvent& e)
 {
-	const TaskManager::TaskPtr currentSelectedTask = StateManagerProxy::Get().GetCurrentSelectedTask();
+	const TaskPtr currentSelectedTask = StateManagerProxy::Get().GetCurrentSelectedTask();
 	if (currentSelectedTask.IsValid())
 	{
 		// Shift category
@@ -352,7 +368,7 @@ void Window_Tasks::OnInput_ChangeTaskCategory(const InputEvent& e)
 
 void Window_Tasks::OnInput_ConfirmEditTask(const InputEvent& e)
 {
-	const TaskManager::TaskPtr currentSelectedTask = StateManagerProxy::Get().GetCurrentSelectedTask();
+	const TaskPtr currentSelectedTask = StateManagerProxy::Get().GetCurrentSelectedTask();
 	if (currentSelectedTask.IsValid())
 	{
 		TaskManagerProxy::Get().GetTask(currentSelectedTask).Name = _inputBuffer;
@@ -363,6 +379,11 @@ void Window_Tasks::OnInput_ConfirmEditTask(const InputEvent& e)
 void Window_Tasks::OnInput_CancelEditTask(const InputEvent& e)
 {
 	StateManagerProxy::Get().SetMode(EApplicationMode::Default);
+}
+
+void Window_Tasks::OnInput_MinimizeApp(const InputEvent& e)
+{
+	Application::Minimize();
 }
 
 void Window_Tasks::OnInput_ExitApp(const InputEvent& e)

@@ -31,12 +31,12 @@ public:
 	EApplicationMode GetMode() { return _mode; }
 	void SetMode(EApplicationMode value) { _mode = value; }
 
-	TaskManager::TaskPtr GetCurrentSelectedTask() const { return _currentSelectedTask; }
-	void SetCurrentSelectedTask(TaskManager::TaskPtr value) { _currentSelectedTask = value; }
+	TaskPtr GetCurrentSelectedTask() const { return _currentSelectedTask; }
+	void SetCurrentSelectedTask(TaskPtr value) { _currentSelectedTask = value; }
 
 private:
 	EApplicationMode _mode = EApplicationMode::Default;
-	TaskManager::TaskPtr _currentSelectedTask;
+	TaskPtr _currentSelectedTask;
 
 };
 

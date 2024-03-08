@@ -3,6 +3,7 @@
 
 #include "imgui.h"
 #include "time/time.h"
+#include "managers/WindowManager.h"
 
 void Application::Init()
 {
@@ -104,9 +105,17 @@ void Application::Update()
 	}
 }
 
+void Application::Minimize()
+{
+	WindowManagerProxy::Get().MinimizeWindow();
+}
+
 void Application::Exit()
 {
-	if (ApplicationProxy::IsValid()) { ApplicationProxy::Get()._isOpen = false; }
+	if (ApplicationProxy::IsValid()) 
+	{
+		ApplicationProxy::Get()._isOpen = false; 
+	}
 }
 
 void Application::InitTheme_1()

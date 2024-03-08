@@ -22,6 +22,7 @@ public:
 
 	bool IsOpen() const { return _isOpen; }
 
+	static void Minimize();
 	static void Exit();
 
 private:
