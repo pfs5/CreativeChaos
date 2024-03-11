@@ -27,10 +27,13 @@ First, I did the sensible thing and started from scratch, and I mean *from scrat
 
 Halfway through I realized implementing a GUI framework is hard and I will never finish. Back to the drawing board.
 
-If you like to know how far I've gotten, here's the [repo](https://github.com/pfs5/TaskOrganizer). I wrote around 2500 lines of code and got this far:
+If you like to know how far I've gotten, here's the [repo](https://github.com/pfs5/TaskOrganizer). I wrote around 2500 lines of code and got this far. If you're into music production, you might recognize where I "borrowed" the design from.
 
+Idea:
 ![Idea:](https://github.com/pfs5/CreativeChaos/assets/14861165/6dd30943-4873-414f-b153-cd93a4404d74)
 
+
+Reality:
 ![Reality:](https://github.com/pfs5/CreativeChaos/assets/14861165/259a28fe-9cfb-4fd5-a7e6-59d8d46e5a81)
 
 
