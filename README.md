@@ -36,3 +36,4 @@ I decided to use [ImGUI](https://github.com/ocornut/imgui/releases) - a beautifu
 At the point of writing this (March 2024) I have implemented the basic feature list and actually started to use my tool daily. I constrained myself to iterate - implement a usable tool first and work on improvements later. One might easily get lost in implementing a custom std::vector class for that nice 1 nanosecond speed gain I didn't let myself get seduced. I did, however, leave "todo"-s everywhere for my future self to handle later.
 
 Here's an overview of the current features.
+![](https://github.com/pfs5/CreativeChaos/blob/master/README/ft-overview.gif)
