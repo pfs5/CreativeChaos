@@ -46,6 +46,7 @@ Here's an overview of the current features.
 ![](https://github.com/pfs5/CreativeChaos/blob/master/README/ft-overview.gif)
 
 If you imagine I narrated the gif, David Attenborough style:
+> Observe chaos, tamed in it's natural habitat.
 > - You can easily add new tasks using CTRL + N and rename existing ones using the common ALT + F2.
 > - Iterate smoothly with arrow keys with the active task displayed on the right.
 > - Tasks are sorted into a few categories. You can easily switch using the SPACE key. The trash is always present and keeps all deleted tasks. Oh, you can also delete tasks with DELETE.
