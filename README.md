@@ -44,3 +44,13 @@ At the point of writing this (March 2024) I have implemented the basic feature l
 
 Here's an overview of the current features.
 ![](https://github.com/pfs5/CreativeChaos/blob/master/README/ft-overview.gif)
+
+If you imagine I narrated the gif, David Attenborough style:
+- You can easily add new tasks using CTRL + N and rename existing ones using the common ALT + F2.
+- Iterate smoothly with arrow keys with the active task displayed on the right.
+- Tasks are sorted into a few categories. You can easily switch using the SPACE key. The trash is always present and keeps all deleted tasks. Oh, you can also delete tasks with DELETE.
+- Task get activated or deactivated with the enter key. You can see the whole history and the elapsed time on the right. The time calculation takes into account only working hours (currently hard-coded, will be configurable, I promise).
+- Priorities are assigned to each task and can be changed via the CTRL + P shortcut.
+- Finally, you can switch between different views, depending on your needs. The default is currently the categories view but there are also priority and activity views.
+
+Thank you. 
