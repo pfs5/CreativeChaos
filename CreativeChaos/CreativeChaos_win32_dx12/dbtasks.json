@@ -1,23 +1,33 @@
 {
     "tasks": [
         {
-            "active": true,
-            "category": 0,
-            "createdAt": 1710191411,
+            "active": false,
+            "category": 2,
+            "createdAt": 1710193373,
             "id": 0,
-            "name": "Task 1",
-            "priority": 1,
+            "name": "Task 1.1",
+            "priority": 5,
+            "taskEvents": null
+        },
+        {
+            "active": false,
+            "category": 2,
+            "createdAt": 1710193374,
+            "id": 1,
+            "name": "Task 2",
+            "priority": 5,
+            "taskEvents": null
+        },
+        {
+            "active": true,
+            "category": 1,
+            "createdAt": 1710193375,
+            "id": 2,
+            "name": "Task 3",
+            "priority": 2,
             "taskEvents": [
                 {
-                    "time": 1710191431,
-                    "type": 0
-                },
-                {
-                    "time": 1710191431,
-                    "type": 1
-                },
-                {
-                    "time": 1710191436,
+                    "time": 1710193384,
                     "type": 0
                 }
             ]
@@ -25,21 +35,21 @@
         {
             "active": true,
             "category": 0,
-            "createdAt": 1710191415,
-            "id": 1,
-            "name": "Task 2.1",
-            "priority": 5,
+            "createdAt": 1710193376,
+            "id": 3,
+            "name": "Task 4",
+            "priority": 1,
             "taskEvents": [
                 {
-                    "time": 1710191430,
+                    "time": 1710193383,
                     "type": 0
                 },
                 {
-                    "time": 1710191430,
+                    "time": 1710193383,
                     "type": 1
                 },
                 {
-                    "time": 1710191435,
+                    "time": 1710193385,
                     "type": 0
                 }
             ]
