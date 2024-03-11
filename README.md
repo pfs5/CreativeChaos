@@ -28,7 +28,11 @@ First, I did the sensible thing and started from scratch, and I mean *from scrat
 Halfway through I realized implementing a GUI framework is hard and I will never finish. Back to the drawing board.
 
 If you like to know how far I've gotten, here's the [repo](https://github.com/pfs5/TaskOrganizer). I wrote around 2500 lines of code and got this far:
-[image]
+
+![Idea:](https://github.com/pfs5/CreativeChaos/assets/14861165/6dd30943-4873-414f-b153-cd93a4404d74)
+
+![Reality:](https://github.com/pfs5/CreativeChaos/assets/14861165/259a28fe-9cfb-4fd5-a7e6-59d8d46e5a81)
+
 
 I finally decided to use [ImGUI](https://github.com/ocornut/imgui/releases) - a beautiful, powerful and simple to use GUI framework which I've had the pleasure of using before. I also needed to save all of the data for which I used this excellent [JSON library](https://github.com/nlohmann/json). Everything else I'll do myself (for now).
 
