@@ -29,7 +29,7 @@ Halfway through I realized implementing a GUI framework is hard and I will never
 
 If you like to know how far I've gotten, here's the [repo](https://github.com/pfs5/TaskOrganizer). I wrote around 2500 lines of code and got this far. If you're into music production, you might recognize where I "borrowed" the design from.
 
-Idea:
+Plan:
 ![Idea:](https://github.com/pfs5/CreativeChaos/assets/14861165/6dd30943-4873-414f-b153-cd93a4404d74)
 
 
