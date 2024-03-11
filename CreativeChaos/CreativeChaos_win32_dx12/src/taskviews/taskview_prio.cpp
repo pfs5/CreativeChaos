@@ -6,7 +6,7 @@
 TaskView_Prio::TaskView_Prio()
 {
 	static constexpr uint8_t NUM_PRIOS = TaskPriority::MAX_PRIO - TaskPriority::MIN_PRIO + 1;
-	_collections.resize(NUM_PRIOS);
+	_collections.resize(NUM_PRIOS + 1); // One more category for deleted tasks.
 
 	for (uint8_t prio = TaskPriority::MIN_PRIO; prio <= TaskPriority::MAX_PRIO; ++prio)
 	{
@@ -14,6 +14,13 @@ TaskView_Prio::TaskView_Prio()
 		
 		TaskCollection& col = GetCollection(priority);
 		col.Title = StringFormat("P%d", prio);
+		col.ShowIndex = false;
+	}
+
+	// Deleted category
+	{
+		TaskCollection& col = _collections.back();
+		col.Title = "Deleted";
 		col.ShowIndex = false;
 	}
 }
@@ -27,7 +34,15 @@ void TaskView_Prio::UpdateTasks()
 		TaskCollection& col = GetCollection(priority);
 		col.Tasks.clear();
 		col.Tasks.reserve(64);
-		TaskManagerProxy::Get().FindTasksWithPredicate(col.Tasks, [priority] (const Task& t) { return t.Priority == priority; });
+		TaskManagerProxy::Get().FindTasksWithPredicate(col.Tasks, [priority] (const Task& t) { return t.Category != ETaskCategory::Trash && t.Priority == priority; });
+	}
+
+	// Deleted category
+	{
+		TaskCollection& col = _collections.back();
+		col.Tasks.clear();
+		col.Tasks.reserve(64);
+		TaskManagerProxy::Get().FindTasksWithPredicate(col.Tasks, [](const Task& t) { return t.Category == ETaskCategory::Trash; });
 	}
 }
 

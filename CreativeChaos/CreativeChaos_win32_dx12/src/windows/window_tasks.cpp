@@ -186,7 +186,7 @@ void Window_Tasks::DrawTasks()
 							}
 						}
 
-						ImGui::TableSetBgColor(ImGuiTableBgTarget_RowBg1, ImGui::GetColorU32(ImVec4{ 0.8f, 0.3f, 0.f, 1.f }));
+						ImGui::TableSetBgColor(ImGuiTableBgTarget_RowBg1, ImGui::GetColorU32(ImGui::GetStyle().Colors[ImGuiCol_NavHighlight]));
 						ImGui::TextColored(ImVec4{ 1.f, 1.f, 1.f, 1.f }, "%s", task.Name.c_str());
 					}
 				}
@@ -371,7 +371,7 @@ void Window_Tasks::OnInput_ConfirmEditTask(const InputEvent& e)
 	const TaskPtr currentSelectedTask = StateManagerProxy::Get().GetCurrentSelectedTask();
 	if (currentSelectedTask.IsValid())
 	{
-		TaskManagerProxy::Get().GetTask(currentSelectedTask).Name = _inputBuffer;
+		TaskManagerProxy::Get().SetTaskName(currentSelectedTask, _inputBuffer);
 		StateManagerProxy::Get().SetMode(EApplicationMode::Default);
 	}
 }

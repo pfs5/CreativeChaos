@@ -24,6 +24,7 @@ public:
 	void StartTask(TaskPtr ptr);
 	void StopTask(TaskPtr ptr);
 
+	void SetTaskName(TaskPtr ptr, const char* name);
 	void SetTaskCategory(TaskPtr ptr, ETaskCategory category);
 	void SetTaskPriority(TaskPtr ptr, TaskPriority prio);
 

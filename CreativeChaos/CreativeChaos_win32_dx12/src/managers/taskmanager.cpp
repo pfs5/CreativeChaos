@@ -92,6 +92,13 @@ void TaskManager::StopTask(TaskPtr ptr)
 	MarkDirty();
 }
 
+void TaskManager::SetTaskName(TaskPtr ptr, const char* name)
+{
+	Task& task = GetTask(ptr);
+	task.Name = name;
+	MarkDirty();
+}
+
 void TaskManager::SetTaskCategory(TaskPtr ptr, ETaskCategory category)
 {
 	Task& task = GetTask(ptr);
@@ -151,6 +158,16 @@ void TaskManager::LoadTasks()
 	_tasks.clear();
 
 	std::ifstream f(StaticConfig::DB_PATH_TASKS);
+	if (!f.is_open())
+	{
+		// Database doesn't exist - force save to create an empty database.
+		DebugManagerProxy::Get().PushLog("Database doesn't exist. Creating new database.");
+
+		SaveTasks();
+
+		return;
+	}
+
 	nlohmann::json allTasks = nlohmann::json::parse(f);
 
 	for (nlohmann::json taskJson : allTasks["tasks"])

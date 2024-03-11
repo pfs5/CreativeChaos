@@ -38,6 +38,7 @@ void to_json(nlohmann::json& json, const Task& task)
 	{
 		{"id", task.ID},
 		{"name", task.Name},
+		{"priority", task.Priority.GetValue()},
 		{"category", (std::underlying_type_t<ETaskCategory>) task.Category},
 		{"active", task.Active},
 		{"createdAt", task.CreatedAt.ToUnix()},
@@ -52,18 +53,28 @@ void to_json(nlohmann::json& json, const Task& task)
 
 void from_json(const nlohmann::json& json, Task& task)
 {
-	json.at("id").get_to(task.ID);
-	json.at("name").get_to(task.Name);
+	json::TryGet(json, "id", task.ID);
+	json::TryGet(json, "name", task.Name);
+
+	uint32_t prio = 0;
+	if (json::TryGet(json, "priority", prio))
+	{
+		task.Priority = TaskPriority{ prio };
+	}
 
 	std::underlying_type_t<ETaskCategory> category;
-	json.at("category").get_to(category);
-	task.Category = static_cast<ETaskCategory>(category);
+	if (json::TryGet(json, "category", category))
+	{
+		task.Category = static_cast<ETaskCategory>(category);
+	}
 
-	json.at("active").get_to(task.Active);
+	json::TryGet(json, "active", task.Active);
 
 	uint64_t createdAt;
-	json.at("createdAt").get_to(createdAt);
-	task.CreatedAt = Timestamp::FromUnix(createdAt);
+	if (json::TryGet(json, "createdAt", createdAt))
+	{
+		task.CreatedAt = Timestamp::FromUnix(createdAt);
+	}
 }
 
 void to_json(nlohmann::json& json, const TaskEvent& taskEvent)

@@ -57,11 +57,12 @@ void InputManager::ResetInputs()
 void InputManager::UpdateInputs_App()
 {
 	SetInputValue(EInputAction::MinimizeApp, ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyPressed(ImGuiKey_M));
-	SetInputValue(EInputAction::ExitApp, ImGui::IsKeyPressed(ImGuiKey_Escape));
 }
 
 void InputManager::Default()
 {
+	SetInputValue(EInputAction::ExitApp, ImGui::IsKeyPressed(ImGuiKey_Escape));
+
 	SetInputValue(EInputAction::NextTask,			!ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyPressed(ImGuiKey_DownArrow));
 	SetInputValue(EInputAction::PreviousTask,		!ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyPressed(ImGuiKey_UpArrow));
 
