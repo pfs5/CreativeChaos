@@ -87,6 +87,8 @@ void InputManager::Default()
 	SetInputValue(EInputAction::ChangeTaskPrio,		ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyPressed(ImGuiKey_P));
 	SetInputValue(EInputAction::ChangeTaskCategory, ImGui::IsKeyPressed(ImGuiKey_Space));
 	SetInputValue(EInputAction::ToggleTaskActive,	ImGui::IsKeyPressed(ImGuiKey_Enter));
+	SetInputValue(EInputAction::TaskAction,			ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyPressed(ImGuiKey_A));
+	SetInputValue(EInputAction::SetTaskCategory,	ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyPressed(ImGuiKey_C));
 }
 
 void InputManager::UpdateInputs_EditTask()
@@ -97,8 +99,10 @@ void InputManager::UpdateInputs_EditTask()
 
 void InputManager::UpdateInputs_Modal()
 {
-	SetInputValue(EInputAction::Confirm,		ImGui::IsKeyPressed(ImGuiKey_Enter));
-	SetInputValue(EInputAction::Cancel,		ImGui::IsKeyPressed(ImGuiKey_Escape));
+	SetInputValue(EInputAction::Next,				ImGui::IsKeyPressed(ImGuiKey_DownArrow));
+	SetInputValue(EInputAction::Previous,			ImGui::IsKeyPressed(ImGuiKey_UpArrow));
+	SetInputValue(EInputAction::Confirm,			ImGui::IsKeyPressed(ImGuiKey_Enter));
+	SetInputValue(EInputAction::Cancel,				ImGui::IsKeyPressed(ImGuiKey_Escape));
 }
 
 void InputManager::SetInputValue(EInputAction input, bool value)

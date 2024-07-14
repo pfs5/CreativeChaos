@@ -3,6 +3,7 @@
 #include "time/time.h"
 #include "util/jsonfwd.h"
 #include "model/taskpriority.h"
+#include "util/hash.h"
 
 enum class ETaskCategory : uint8_t
 {
@@ -48,13 +49,27 @@ struct Task
 {
 	uint32_t ID;
 	std::string Name;
+
 	ETaskCategory Category;
+	
 	TaskPriority Priority;	// ptodo - serialize
-	bool Active = false;
 	Timestamp CreatedAt;
 	TimeSpan Progress;
-	std::vector<TaskEvent> Events;	// ensure events are sorted
 
+	// ptodo - to flags?
+	bool Active = false;
+	bool Done = false;
+
+	// Private data that shouldn't be manipulated directly (except serialization, but that should be fixed).
+	std::string _customCategory;
+	HashType _customCategoryHash;	// Derived
+	std::vector<TaskEvent> _events;	// ensure events are sorted
+
+	// Accessors
+	const std::string& GetCustomCategory() const { return _customCategory; }
+	HashType GetCustomCategoryHash() const { return _customCategoryHash; }
+	const std::vector<TaskEvent>&  Events() const { return _events; }
+	
 	Task() = default;
 	Task(const char* name, ETaskCategory category, uint32_t id, Timestamp createdAt = Timestamp::Now()) :
 		Name{ name },
@@ -67,10 +82,12 @@ struct Task
 
 	TimeSpan CalculateProgress() const;
 
+	void SetCustomCategory(const char* value);
+	
 	template<typename... Args>
 	void PushEvent(const Args&... args)
 	{
-		Events.emplace_back(std::forward<const Args>(args)...);
+		_events.emplace_back(std::forward<const Args>(args)...);
 		Progress = CalculateProgress();
 	}
 

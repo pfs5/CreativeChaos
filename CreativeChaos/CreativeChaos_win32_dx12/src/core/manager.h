@@ -3,5 +3,6 @@
 class Manager
 {
 public:
-	virtual void Update() {};
+	virtual void Initialize() {}
+	virtual void Update() {}
 };

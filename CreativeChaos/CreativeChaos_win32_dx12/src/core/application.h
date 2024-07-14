@@ -1,5 +1,6 @@
 #pragma once
 
+#include "managers/configmanager.h"
 #include "managers/debugmanager.h"
 #include "managers/inputmanager.h"
 #include "managers/statemanager.h"
@@ -29,6 +30,7 @@ private:
 	bool _isOpen = false;
 
 	DebugManager _debugManager;
+	ConfigManager _configManager;
 	TaskManager _taskManager;
 	InputManager _inputManager;
 	StateManager _stateManager;
@@ -46,6 +48,8 @@ private:
 	void RegisterWindow(Window& w) { _windows.emplace_back(&w); w.OnRegister(); }
 	void RegisterManager(Manager& m) { _managers.emplace_back(&m); }
 
+	void InitializeManagers();
+	
 	void InitTheme_1();
 	void InitTheme_2();
 

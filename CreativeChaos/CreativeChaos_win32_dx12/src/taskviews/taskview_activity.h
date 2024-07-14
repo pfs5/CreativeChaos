@@ -7,6 +7,7 @@ class TaskView_Activity : public TaskView
 public:
 	TaskView_Activity();
 
+	const char* GetTitle() const { return "Activity"; };
 	void UpdateTasks() override;
 
 private:

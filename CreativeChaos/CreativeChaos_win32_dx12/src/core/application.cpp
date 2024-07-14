@@ -13,22 +13,25 @@ void Application::Init()
 	ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NavNoCaptureKeyboard;
 
 	// Setup
+	// Managers use proxies so we open those first.
 	DebugManagerProxy::Open(_debugManager);
+	ConfigManagerProxy::Open(_configManager);
 	TaskManagerProxy::Open(_taskManager);
 	InputManagerProxy::Open(_inputManager);
 	StateManagerProxy::Open(_stateManager);
 
 	RegisterManager(_debugManager);	// must be first
+	RegisterManager(_configManager);
 	RegisterManager(_taskManager);
 	RegisterManager(_inputManager);
 	RegisterManager(_stateManager);
+	InitializeManagers();
 
 	RegisterWindow(_windowTasks);
 	RegisterWindow(_windowProperties);
 	RegisterWindow(_windowDebug);
 	RegisterWindow(_windowLog);
 
-	_taskManager.Initialize();
 
 	DebugManagerProxy::Get().PushLog("App initialized.");
 
@@ -43,6 +46,7 @@ void Application::Shutdown()
 	StateManagerProxy::Close(_stateManager);
 	InputManagerProxy::Close(_inputManager);
 	TaskManagerProxy::Close(_taskManager);
+	ConfigManagerProxy::Close(_configManager);
 	DebugManagerProxy::Close(_debugManager);
 }
 
@@ -115,6 +119,14 @@ void Application::Exit()
 	if (ApplicationProxy::IsValid()) 
 	{
 		ApplicationProxy::Get()._isOpen = false; 
+	}
+}
+
+void Application::InitializeManagers()
+{
+	for (Manager* m : _managers)
+	{
+		m->Initialize();
 	}
 }
 
@@ -317,8 +329,9 @@ void Application::LoadFonts()
 	static const char * const ROOT = ".\\res\\fonts";
 
 	static const std::vector<std::pair<const char*, float>> FONTS = {
-		{"Roboto-Medium.ttf", 17.f},
+		{"OpenSans-Regular.ttf", 20.f},
 
+		{"Roboto-Medium.ttf", 17.f},
 		{"Cousine-Regular.ttf", 12.f},
 		{"DroidSans.ttf", 12.f},
 		{"Karla-Regular.ttf", 12.f},

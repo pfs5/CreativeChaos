@@ -8,7 +8,7 @@
 class TaskManager : public Manager
 {
 public:
-	void Initialize();
+	void Initialize() override;
 
 	void CreateNewTask(const char* name, ETaskCategory category);
 
@@ -26,7 +26,9 @@ public:
 
 	void SetTaskName(TaskPtr ptr, const char* name);
 	void SetTaskCategory(TaskPtr ptr, ETaskCategory category);
+	void SetTaskCustomCategory(TaskPtr ptr, const char* category);
 	void SetTaskPriority(TaskPtr ptr, TaskPriority prio);
+	void SetTaskDone(TaskPtr ptr, bool isDone);
 
 	void MarkDirty();
 

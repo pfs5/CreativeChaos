@@ -2,8 +2,7 @@
 #include "core/window.h"
 
 #include "imgui.h"
-#include "managers/inputmanager.h"
-#include "windows/modalwindow.h"
+#include "windows/modals/modalwindow.h"
 #include "managers/statemanager.h"
 
 Window::Window() = default;

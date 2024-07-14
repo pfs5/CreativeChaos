@@ -12,6 +12,7 @@ struct TaskCollection
 class TaskView
 {
 public:
+	virtual const char* GetTitle() const = 0;
 	virtual void UpdateTasks() {}
 
 	// We provide controls to move tasks between collections. Since collections depend on task views, we leave this responsibilty to task view implementations.

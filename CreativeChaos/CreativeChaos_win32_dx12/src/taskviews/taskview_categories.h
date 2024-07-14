@@ -11,6 +11,7 @@ class TaskView_Categories : public TaskView
 public:
 	TaskView_Categories();
 
+	const char* GetTitle() const override { return "Categories"; };
 	void UpdateTasks() override;
 	void ChangeTaskCollectionUp(TaskPtr task)  const override;
 	void ChangeTaskCollectionDown(TaskPtr task) const override;

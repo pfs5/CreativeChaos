@@ -10,7 +10,7 @@ TimeSpan Task::CalculateProgress() const
 	Timestamp lastActivate;
 	bool lastActivateValid = false;
 
-	for (const TaskEvent& taskEvent : Events)
+	for (const TaskEvent& taskEvent : _events)
 	{
 		if (taskEvent.Type == TaskEvent::EType::Start)
 		{
@@ -32,6 +32,12 @@ TimeSpan Task::CalculateProgress() const
 	return progress;
 }
 
+void Task::SetCustomCategory(const char* value)
+{
+	_customCategory = value;
+	_customCategoryHash = HashFun(_customCategory);
+}
+
 void to_json(nlohmann::json& json, const Task& task)
 {
 	json = nlohmann::json
@@ -41,11 +47,12 @@ void to_json(nlohmann::json& json, const Task& task)
 		{"priority", task.Priority.GetValue()},
 		{"category", (std::underlying_type_t<ETaskCategory>) task.Category},
 		{"active", task.Active},
+		{"done", task.Done},
 		{"createdAt", task.CreatedAt.ToUnix()},
 		{"taskEvents", nlohmann::json {}}
 	};
 
-	for (const TaskEvent& taskEvent : task.Events)
+	for (const TaskEvent& taskEvent : task._events)
 	{
 		json["taskEvents"].push_back(taskEvent);
 	}
@@ -69,6 +76,7 @@ void from_json(const nlohmann::json& json, Task& task)
 	}
 
 	json::TryGet(json, "active", task.Active);
+	json::TryGet(json, "done", task.Done);
 
 	uint64_t createdAt;
 	if (json::TryGet(json, "createdAt", createdAt))

@@ -18,7 +18,7 @@ void Window_Properties::OnDraw()
 	if (ImGui::BeginTable("###PropertiesTable", 2, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg))
 	{
 		// Setup cols
-		ImGui::TableSetupColumn("Property", ImGuiTableColumnFlags_WidthFixed, 60.f);
+		ImGui::TableSetupColumn("Property", ImGuiTableColumnFlags_WidthFixed, 70.f);
 		ImGui::TableSetupColumn("Value", ImGuiTableColumnFlags_WidthStretch);
 		
 		// ID
@@ -48,6 +48,15 @@ void Window_Properties::OnDraw()
 		ImGui::TableSetColumnIndex(1);
 		ImGui::Text("%s", task.Active ? "Active" : "-");
 
+		// Custom Category
+		ImGui::TableNextRow();
+
+		ImGui::TableSetColumnIndex(0);
+		ImGui::Text("Category:");
+
+		ImGui::TableSetColumnIndex(1);
+		ImGui::Text("%s", task.GetCustomCategory().empty() ? "-" : task.GetCustomCategory().c_str());
+		
 		// Time elapsed
 		ImGui::TableNextRow();
 
@@ -73,7 +82,7 @@ void Window_Properties::OnDraw()
 
 	if (ImGui::TreeNodeEx("Events:", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_NoTreePushOnOpen))
 	{
-		if (!task.Events.empty())
+		if (!task.Events().empty())
 		{
 			if (ImGui::BeginTable("###EventsTable", 2, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg))
 			{
@@ -81,7 +90,7 @@ void Window_Properties::OnDraw()
 				ImGui::TableSetupColumn("Timestamp", ImGuiTableColumnFlags_WidthFixed, 140.f);
 				ImGui::TableSetupColumn("Action", ImGuiTableColumnFlags_WidthStretch);
 
-				for (const TaskEvent& taskEvent : task.Events)
+				for (const TaskEvent& taskEvent : task.Events())
 				{
 					ImGui::TableNextRow();
 

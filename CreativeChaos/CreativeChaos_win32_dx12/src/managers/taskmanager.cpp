@@ -40,6 +40,8 @@ const TaskPtr TaskPtr::Invalid;
 
 void TaskManager::Initialize()
 {
+	Manager::Initialize();
+
 	LoadTasks();
 }
 
@@ -112,6 +114,19 @@ void TaskManager::SetTaskCategory(TaskPtr ptr, ETaskCategory category)
 	}
 }
 
+void TaskManager::SetTaskCustomCategory(TaskPtr ptr, const char* category)
+{
+	Task& task = GetTask(ptr);
+
+	const HashType oldCategoryHash = task.GetCustomCategoryHash();
+	task.SetCustomCategory(category);
+
+	if (oldCategoryHash != task.GetCustomCategoryHash())
+	{
+		MarkDirty();
+	}
+}
+
 void TaskManager::SetTaskPriority(TaskPtr ptr, TaskPriority prio)
 {
 	Task& task = GetTask(ptr);
@@ -121,6 +136,22 @@ void TaskManager::SetTaskPriority(TaskPtr ptr, TaskPriority prio)
 
 	if (oldPrio != prio)
 	{
+		MarkDirty();
+	}
+}
+
+void TaskManager::SetTaskDone(TaskPtr ptr, bool isDone)
+{
+	Task& task = GetTask(ptr);
+
+	if (isDone && task.Active)
+	{
+		StopTask(ptr);
+	}
+	
+	if (task.Done != isDone)
+	{
+		task.Done = isDone;
 		MarkDirty();
 	}
 }
@@ -178,8 +209,8 @@ void TaskManager::LoadTasks()
 
 		for (nlohmann::json taskEventJson : taskJson["taskEvents"])
 		{
-			t.Events.emplace_back();
-			TaskEvent& taskEvent = t.Events[t.Events.size() - 1];
+			t._events.emplace_back();
+			TaskEvent& taskEvent = t._events[t._events.size() - 1];
 			from_json(taskEventJson, taskEvent);
 		}
 	}

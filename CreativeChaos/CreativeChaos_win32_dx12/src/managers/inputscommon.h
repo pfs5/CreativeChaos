@@ -29,7 +29,12 @@ enum class EInputAction : uint8_t
 
 	ConfirmEditTask,
 	CancelEditTask,
+	
+	TaskAction,
+	SetTaskCategory,
 
+	Next,
+	Previous,
 	Confirm,
 	Cancel,
 

@@ -12,6 +12,8 @@ public:
 	Window_Tasks();
 	~Window_Tasks();
 
+	void OnRegister() override;
+	
 protected:
 	void SetupInputs() override;
 
@@ -45,15 +47,20 @@ private:
 	const TaskView* GetCurrentTaskView() const { return _currentTaskViewIdx < _taskViews.size() ? _taskViews[_currentTaskViewIdx].get() : nullptr; }
 	TaskView* GetCurrentTaskView() { return const_cast<TaskView*>(const_cast<const Window_Tasks&>(*this).GetCurrentTaskView()); }
 
+	void DrawCommon();	// Common draw logic visible for all views.
 	void UpdateTasks();
 	void DrawTasks();
 	void DrawNewTaskModal();
 	
 	void DrawActiveButton();
+	void DrawDoneButton();
 
 	size_t GetTotalNumTasks() const;
 	void ClearInputBuffer() { _inputBuffer[0] = '\0'; }
 
+	void SetCurrentTaskViewIndex(uint32_t index);
+	void OnTaskViewChanged();
+	
 	// Inputs
 	void OnInput_NextTask(const InputEvent& e);
 	void OnInput_PreviousTask(const InputEvent& e);
@@ -70,6 +77,9 @@ private:
 	void OnInput_ChangeTaskCategory(const InputEvent& e);
 	void OnInput_ConfirmEditTask(const InputEvent& e);
 	void OnInput_CancelEditTask(const InputEvent& e);
+	void OnInput_TaskAction(const InputEvent& e);
+	void OnInput_SetTaskCategory(const InputEvent& e);
+	
 	void OnInput_MinimizeApp(const InputEvent& e);
 	void OnInput_ExitApp(const InputEvent& e);
 };

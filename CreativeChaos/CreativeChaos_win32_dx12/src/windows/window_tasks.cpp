@@ -13,17 +13,39 @@
 #include "taskviews/taskview_prio.h"
 #include "util/imguihelpers.h"
 #include "util/tostring.h"
-#include "modalwindow_newtask.h"
-#include "modalwindow_changeprio.h"
+#include "modals/modalwindow_newtask.h"
+#include "modals/modalwindow_changeprio.h"
+#include "modals/modalwindow_setcustomcategory.h"
+#include "modals/modalwindow_taskaction.h"
+#include "taskviews/taskview_customcategories.h"
 
 Window_Tasks::Window_Tasks()
 {
 	_taskViews.emplace_back(new TaskView_Prio());
 	_taskViews.emplace_back(new TaskView_Categories());
 	_taskViews.emplace_back(new TaskView_Activity());
+	_taskViews.emplace_back(new TaskView_CustomCategories());
 }
 
 Window_Tasks::~Window_Tasks() = default;
+
+void Window_Tasks::OnRegister()
+{
+	Window::OnRegister();
+
+	// Setup view
+	const ConfigManager::Data& configData = ConfigManagerProxy::Get().GetData();
+	for (uint32_t i = 0; i < _taskViews.size(); ++i)
+	{
+		ensure(_taskViews[i]);
+		
+		if (_taskViews[i]->GetTitle() == configData.LastTaskView)
+		{
+			SetCurrentTaskViewIndex(i);
+			break;
+		}
+	}
+}
 
 void Window_Tasks::SetupInputs()
 {
@@ -51,6 +73,8 @@ void Window_Tasks::SetupInputs()
 	RegisterInputCallbackTemplated<Window_Tasks>(this, EInputAction::ChangeTaskCategory, &Window_Tasks::OnInput_ChangeTaskCategory);
 	RegisterInputCallbackTemplated<Window_Tasks>(this, EInputAction::ConfirmEditTask, &Window_Tasks::OnInput_ConfirmEditTask);
 	RegisterInputCallbackTemplated<Window_Tasks>(this, EInputAction::CancelEditTask, &Window_Tasks::OnInput_CancelEditTask);
+	RegisterInputCallbackTemplated<Window_Tasks>(this, EInputAction::TaskAction, &Window_Tasks::OnInput_TaskAction);
+	RegisterInputCallbackTemplated<Window_Tasks>(this, EInputAction::SetTaskCategory, &Window_Tasks::OnInput_SetTaskCategory);
 
 	// ptodo - move this somewhere else
 	RegisterInputCallbackTemplated<Window_Tasks>(this, EInputAction::MinimizeApp, &Window_Tasks::OnInput_MinimizeApp);
@@ -59,18 +83,28 @@ void Window_Tasks::SetupInputs()
 
 void Window_Tasks::OnDraw()
 {
-	// todo - shortcuts bar
-	if (ImGui::TreeNodeEx("Shortcuts", ImGuiTreeNodeFlags_DefaultOpen))
+	DrawCommon();
+	UpdateTasks();
+	DrawTasks();
+
+	_selectionChanged = false;
+}
+
+void Window_Tasks::DrawCommon()
+{
+	const TaskView* const view = GetCurrentTaskView();
+	ImGui::Text("%s | Total tasks: %d",
+		view != nullptr ? view->GetTitle() : "",
+		TaskManagerProxy::Get().GetNumTasks()
+	);
+	
+	if (ImGui::TreeNodeEx("Shortcuts"))
 	{
 		ImGui::Text("F1 - Activate | F2 - Edit | Delete - Move to trash | Space - Change category");
 		ImGui::NewLine();
 		ImGui::TreePop();
 	}
 
-	UpdateTasks();
-	DrawTasks();
-
-	_selectionChanged = false;
 }
 
 void Window_Tasks::UpdateTasks()
@@ -144,7 +178,11 @@ void Window_Tasks::DrawTasks()
 
 				// Col1 - Task status
 				ImGui::TableSetColumnIndex(1);
-				if (task.Active)
+				if (task.Done)
+				{
+					DrawDoneButton();
+				}
+				else if (task.Active)
 				{
 					DrawActiveButton();
 				}
@@ -210,7 +248,7 @@ void Window_Tasks::DrawTasks()
 void Window_Tasks::DrawActiveButton()
 {
 	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 5.f, 2.f });
-	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.f, 0.5f, 0.f, 1.f });
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.5f, 0.5f, 0.f, 1.f });
 	const char* const text = "active";
 
 	const ImVec2 framePadding = ImGui::GetStyle().FramePadding;
@@ -223,12 +261,55 @@ void Window_Tasks::DrawActiveButton()
 	ImGui::PopStyleColor();
 }
 
+void Window_Tasks::DrawDoneButton()
+{
+	ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 5.f, 2.f });
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.f, 0.5f, 0.f, 1.f });
+	const char* const text = "active";
+
+	const ImVec2 framePadding = ImGui::GetStyle().FramePadding;
+	const ImVec2 buttonSize = ImGui::CalcTextSize(text) + framePadding * 2.f;
+	// ptodo - do this nicer
+	ImGui::SetCursorPosX(ImGui::GetCursorPosX() - framePadding.x + (ImGui::GetContentRegionAvail().x + framePadding.x) * 0.5f - buttonSize.x * 0.5f + framePadding.x * 0.5f);
+
+	ImGui::Button("done", buttonSize);
+	ImGui::PopStyleVar();
+	ImGui::PopStyleColor();
+}
+
 size_t Window_Tasks::GetTotalNumTasks() const
 {
 	const TaskView* const currentView = GetCurrentTaskView();
 	ensure(currentView != nullptr);
 
 	return currentView->GetNumVisibleTasks();
+}
+
+void Window_Tasks::SetCurrentTaskViewIndex(uint32_t index)
+{
+	if (_currentTaskViewIdx == index)
+	{
+		return;
+	}
+
+	_currentTaskViewIdx = index;
+	
+	OnTaskViewChanged();
+}
+
+void Window_Tasks::OnTaskViewChanged()
+{
+	TaskView* view = GetCurrentTaskView();
+	if (view == nullptr)
+	{
+		return;
+	}
+	
+	ConfigManagerProxy::Get().UpdateData([view](ConfigManager::Data& data, bool& shouldSaveData)
+	{
+		data.LastTaskView = view->GetTitle();
+		shouldSaveData = true;
+	});
 }
 
 void Window_Tasks::OnInput_NextTask(const InputEvent& e)
@@ -265,7 +346,7 @@ void Window_Tasks::OnInput_PreviousTask(const InputEvent& e)
 
 void Window_Tasks::OnInput_NextTaskView(const InputEvent& e)
 {
-	_currentTaskViewIdx = (_currentTaskViewIdx + 1) % _taskViews.size();
+	SetCurrentTaskViewIndex((_currentTaskViewIdx + 1) % _taskViews.size());
 }
 
 void Window_Tasks::OnInput_ToggleCategory(const InputEvent& e, uint32_t categoryIdx)
@@ -331,7 +412,15 @@ void Window_Tasks::OnInput_DeleteTask(const InputEvent& e)
 	const TaskPtr currentSelectedTask = StateManagerProxy::Get().GetCurrentSelectedTask();
 	if (currentSelectedTask.IsValid())
 	{
-		TaskManagerProxy::Get().SetTaskCategory(currentSelectedTask, ETaskCategory::Trash);
+		const Task& task = currentSelectedTask.GetTask();
+		if (!task.Done)
+		{
+			TaskManagerProxy::Get().SetTaskDone(currentSelectedTask, true);
+		}
+		else
+		{
+			TaskManagerProxy::Get().SetTaskCategory(currentSelectedTask, ETaskCategory::Trash);
+		}
 	}
 }
 
@@ -379,6 +468,24 @@ void Window_Tasks::OnInput_ConfirmEditTask(const InputEvent& e)
 void Window_Tasks::OnInput_CancelEditTask(const InputEvent& e)
 {
 	StateManagerProxy::Get().SetMode(EApplicationMode::Default);
+}
+
+void Window_Tasks::OnInput_TaskAction(const InputEvent& e)
+{
+	const TaskPtr currentSelectedTask = StateManagerProxy::Get().GetCurrentSelectedTask();
+	if (currentSelectedTask.IsValid())
+	{
+		PushModal<ModalWindow_TaskAction>(currentSelectedTask);
+	}
+}
+
+void Window_Tasks::OnInput_SetTaskCategory(const InputEvent& e)
+{
+	const TaskPtr currentSelectedTask = StateManagerProxy::Get().GetCurrentSelectedTask();
+	if (currentSelectedTask.IsValid())
+	{
+		PushModal<ModalWindow_SetCustomCategory>(currentSelectedTask);
+	}
 }
 
 void Window_Tasks::OnInput_MinimizeApp(const InputEvent& e)
