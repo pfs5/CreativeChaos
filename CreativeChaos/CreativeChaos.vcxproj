@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{1D6E25C5-B832-411B-8352-F94FF681A4EE}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>CreativeChaos</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;ImTextureID=ImU64;_MBCS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>%VULKAN_SDK%\include;..\libs\glfw\include;..\external;source;$(SolutionDir)ImGui\include</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>%VULKAN_SDK%\lib;..\libs\glfw\lib-vc2010-64;$(SolutionDir)lib\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(CoreLibraryDependencies);vulkan-1.lib;glfw3.lib;ImGui.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>msvcrt.lib</IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;ImTextureID=ImU64;_MBCS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>%VULKAN_SDK%\include;..\libs\glfw\include;..\external;source;$(SolutionDir)ImGui\include</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>%VULKAN_SDK%\lib;..\libs\glfw\lib-vc2010-64;$(SolutionDir)lib\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(CoreLibraryDependencies);vulkan-1.lib;glfw3.lib;ImGui.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="source\core\application.cpp" />
+    <ClCompile Include="source\core\window.cpp" />
+    <ClCompile Include="source\main\imgui_impl_glfw.cpp" />
+    <ClCompile Include="source\main\imgui_impl_vulkan.cpp" />
+    <ClCompile Include="source\main\main.cpp" />
+    <ClCompile Include="source\managers\configmanager.cpp" />
+    <ClCompile Include="source\managers\debugmanager.cpp" />
+    <ClCompile Include="source\managers\inputhandler.cpp" />
+    <ClCompile Include="source\managers\inputmanager.cpp" />
+    <ClCompile Include="source\managers\statemanager.cpp" />
+    <ClCompile Include="source\managers\taskmanager.cpp" />
+    <ClCompile Include="source\managers\windowmanager.cpp" />
+    <ClCompile Include="source\model\task.cpp" />
+    <ClCompile Include="source\model\taskview.cpp" />
+    <ClCompile Include="source\pch.cpp" />
+    <ClCompile Include="source\platform\windowmanager_glfw.cpp" />
+    <ClCompile Include="source\platform\windowmanager_windows.cpp" />
+    <ClCompile Include="source\taskviews\taskview_activity.cpp" />
+    <ClCompile Include="source\taskviews\taskview_categories.cpp" />
+    <ClCompile Include="source\taskviews\taskview_customcategories.cpp" />
+    <ClCompile Include="source\taskviews\taskview_prio.cpp" />
+    <ClCompile Include="source\time\time.cpp" />
+    <ClCompile Include="source\time\time2.cpp" />
+    <ClCompile Include="source\util\debug.cpp" />
+    <ClCompile Include="source\util\imguioperators.cpp" />
+    <ClCompile Include="source\windows\modals\modalwindow.cpp" />
+    <ClCompile Include="source\windows\modals\modalwindow_changeprio.cpp" />
+    <ClCompile Include="source\windows\modals\modalwindow_newtask.cpp" />
+    <ClCompile Include="source\windows\modals\modalwindow_selector.cpp" />
+    <ClCompile Include="source\windows\modals\modalwindow_setcustomcategory.cpp" />
+    <ClCompile Include="source\windows\modals\modalwindow_taskaction.cpp" />
+    <ClCompile Include="source\windows\window_debug.cpp" />
+    <ClCompile Include="source\windows\window_log.cpp" />
+    <ClCompile Include="source\windows\window_properties.cpp" />
+    <ClCompile Include="source\windows\window_tasks.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\core\app.h" />
+    <ClInclude Include="source\core\application.h" />
+    <ClInclude Include="source\core\manager.h" />
+    <ClInclude Include="source\core\staticconfig.h" />
+    <ClInclude Include="source\core\window.h" />
+    <ClInclude Include="source\external\nlohmann_json.hpp" />
+    <ClInclude Include="source\external\nlohmann_json_fwd.hpp" />
+    <ClInclude Include="source\main\imgui_impl_glfw.h" />
+    <ClInclude Include="source\main\imgui_impl_vulkan.h" />
+    <ClInclude Include="source\managers\configmanager.h" />
+    <ClInclude Include="source\managers\debugmanager.h" />
+    <ClInclude Include="source\managers\inputhandler.h" />
+    <ClInclude Include="source\managers\inputmanager.h" />
+    <ClInclude Include="source\managers\inputscommon.h" />
+    <ClInclude Include="source\managers\statemanager.h" />
+    <ClInclude Include="source\managers\taskmanager.h" />
+    <ClInclude Include="source\managers\windowmanager.h" />
+    <ClInclude Include="source\model\task.h" />
+    <ClInclude Include="source\model\taskpriority.h" />
+    <ClInclude Include="source\model\taskscommon.h" />
+    <ClInclude Include="source\model\taskview.h" />
+    <ClInclude Include="source\pch.h" />
+    <ClInclude Include="source\platform\windowmanager_glfw.h" />
+    <ClInclude Include="source\platform\windowmanager_windows.h" />
+    <ClInclude Include="source\taskviews\taskview_activity.h" />
+    <ClInclude Include="source\taskviews\taskview_categories.h" />
+    <ClInclude Include="source\taskviews\taskview_customcategories.h" />
+    <ClInclude Include="source\taskviews\taskview_prio.h" />
+    <ClInclude Include="source\time\time.h" />
+    <ClInclude Include="source\time\time2.h" />
+    <ClInclude Include="source\util\asserts.h" />
+    <ClInclude Include="source\util\debug.h" />
+    <ClInclude Include="source\util\hash.h" />
+    <ClInclude Include="source\util\imguihelpers.h" />
+    <ClInclude Include="source\util\imguioperators.h" />
+    <ClInclude Include="source\util\json.h" />
+    <ClInclude Include="source\util\jsonfwd.h" />
+    <ClInclude Include="source\util\performance.h" />
+    <ClInclude Include="source\util\proxy.h" />
+    <ClInclude Include="source\util\tostring.h" />
+    <ClInclude Include="source\util\util.h" />
+    <ClInclude Include="source\windows\modals\modalwindow.h" />
+    <ClInclude Include="source\windows\modals\modalwindow_changeprio.h" />
+    <ClInclude Include="source\windows\modals\modalwindow_newtask.h" />
+    <ClInclude Include="source\windows\modals\modalwindow_selector.h" />
+    <ClInclude Include="source\windows\modals\modalwindow_setcustomcategory.h" />
+    <ClInclude Include="source\windows\modals\modalwindow_taskaction.h" />
+    <ClInclude Include="source\windows\window_debug.h" />
+    <ClInclude Include="source\windows\window_log.h" />
+    <ClInclude Include="source\windows\window_properties.h" />
+    <ClInclude Include="source\windows\window_tasks.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

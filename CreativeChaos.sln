@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CreativeChaos", "CreativeChaos\CreativeChaos.vcxproj", "{1D6E25C5-B832-411B-8352-F94FF681A4EE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CB4F0834-20F7-4E95-9D3A-64F35C57CBE3} = {CB4F0834-20F7-4E95-9D3A-64F35C57CBE3}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImGui", "ImGui\ImGui.vcxproj", "{CB4F0834-20F7-4E95-9D3A-64F35C57CBE3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1D6E25C5-B832-411B-8352-F94FF681A4EE}.Debug|x64.ActiveCfg = Debug|x64
+		{1D6E25C5-B832-411B-8352-F94FF681A4EE}.Debug|x64.Build.0 = Debug|x64
+		{1D6E25C5-B832-411B-8352-F94FF681A4EE}.Release|x64.ActiveCfg = Release|x64
+		{1D6E25C5-B832-411B-8352-F94FF681A4EE}.Release|x64.Build.0 = Release|x64
+		{CB4F0834-20F7-4E95-9D3A-64F35C57CBE3}.Debug|x64.ActiveCfg = Debug|x64
+		{CB4F0834-20F7-4E95-9D3A-64F35C57CBE3}.Debug|x64.Build.0 = Debug|x64
+		{CB4F0834-20F7-4E95-9D3A-64F35C57CBE3}.Release|x64.ActiveCfg = Release|x64
+		{CB4F0834-20F7-4E95-9D3A-64F35C57CBE3}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,5 @@
+.vs
+.idea
+Builds
+ImGui/x64
+lib/x64
